@@ -111,40 +111,184 @@
 
     <section class="preview" [ngStyle]="previewStyles">
       <div class="preview-window">
-        <div class="preview-header">
-          <div class="preview-logo-circle"></div>
-          <div class="preview-nav">
-            <span>Home</span>
+        <!-- Top navigation -->
+        <nav class="lp-nav">
+          <div class="lp-nav-left">
+            <button class="lp-pill-back" type="button">Back</button>
+            <div class="preview-logo-circle"></div>
+            <span class="lp-brand">PixelCraft</span>
+          </div>
+          <div class="lp-nav-links">
+            <span>Services</span>
+            <span>Portfolio</span>
             <span>About</span>
             <span>Contact</span>
           </div>
-          <button class="preview-cta">Get started</button>
-        </div>
+          <div class="lp-nav-actions">
+            <button class="btn-secondary" type="button">Login</button>
+            <button class="btn-primary" type="button">Get Started</button>
+          </div>
+        </nav>
 
-        <div class="preview-hero">
-          <div class="preview-hero-text">
-            <h2>Design system in seconds.</h2>
+        <!-- Hero -->
+        <section class="lp-hero">
+          <div class="lp-hero-text">
+            <div class="lp-badge">Trusted by 500+ businesses</div>
+            <h2>Beautiful Web Design That Converts</h2>
             <p>
-              Your color, type, and spacing choices are applied live to this template.
-              Tweak until it feels right.
+              Transform your business with clean, responsive websites that drive
+              results. Adjust the style tokens to see how your brand could look.
             </p>
-            <div class="preview-actions">
-              <button class="btn-primary">Primary action</button>
-              <button class="btn-secondary" type="button">Secondary</button>
+            <div class="lp-hero-actions">
+              <button class="btn-primary" type="button">Start Project</button>
+              <button class="btn-secondary" type="button">Watch Demo</button>
             </div>
           </div>
-          <div class="preview-hero-card card">
-            <h3>Card title</h3>
-            <p>
-              This is a card. It uses your surface color, radius, spacing and text
-              styles.
-            </p>
-            <div class="preview-badges">
-              <span class="badge">Badge</span>
-              <span class="badge">Pill</span>
-            </div>
+          <div class="lp-hero-media">
+            <div class="lp-hero-media-placeholder">Hero Image Placeholder</div>
           </div>
-        </div>
+        </section>
+
+        <!-- Why choose us -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Why Choose PixelCraft?</h3>
+            <p class="lp-section-subtitle">
+              Comprehensive web design solutions for modern businesses.
+            </p>
+          </div>
+          <div class="lp-features">
+            <article class="card lp-feature-card">
+              <div class="lp-feature-icon"></div>
+              <h4 class="lp-feature-title">Responsive Design</h4>
+              <p class="lp-feature-text">
+                Perfect viewing experience across all devices and screen sizes.
+              </p>
+            </article>
+            <article class="card lp-feature-card">
+              <div class="lp-feature-icon"></div>
+              <h4 class="lp-feature-title">Fast Performance</h4>
+              <p class="lp-feature-text">
+                Optimised for speed, SEO, and a smooth user experience.
+              </p>
+            </article>
+            <article class="card lp-feature-card">
+              <div class="lp-feature-icon"></div>
+              <h4 class="lp-feature-title">Secure & Reliable</h4>
+              <p class="lp-feature-text">
+                Built with best practices for security, reliability, and uptime.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Recent work -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Our Recent Work</h3>
+            <p class="lp-section-subtitle">
+              Explore example projects styled with your current design tokens.
+            </p>
+          </div>
+          <div class="lp-work-grid">
+            <article class="card lp-work-card">
+              <div class="lp-work-image">E‑commerce Website</div>
+              <div class="lp-work-meta">
+                <h4>Fashion Boutique</h4>
+                <p>Modern e‑commerce platform with seamless shopping experience.</p>
+              </div>
+            </article>
+            <article class="card lp-work-card">
+              <div class="lp-work-image">Corporate Website</div>
+              <div class="lp-work-meta">
+                <h4>Tech Startup</h4>
+                <p>Clean corporate identity with modern design elements.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">What Our Clients Say</h3>
+          </div>
+          <div class="lp-testimonials-grid">
+            <article class="card lp-testimonial-card">
+              <div class="lp-stars">★★★★★</div>
+              <p>
+                “PixelCraft delivered a website that exceeded our expectations. The design
+                is both beautiful and functional.”
+              </p>
+              <div class="lp-testimonial-name">Sarah Johnson</div>
+              <div class="lp-testimonial-role">CEO, TechVision</div>
+            </article>
+            <article class="card lp-testimonial-card">
+              <div class="lp-stars">★★★★★</div>
+              <p>
+                “Our new site increased conversions by over 40%. Being able to preview the
+                style tokens made decisions easy.”
+              </p>
+              <div class="lp-testimonial-name">Michael Chen</div>
+              <div class="lp-testimonial-role">Founder, GreenLeaf</div>
+            </article>
+            <article class="card lp-testimonial-card">
+              <div class="lp-stars">★★★★★</div>
+              <p>
+                “Amazing attention to detail and creative solutions. The brand feels
+                consistent across every page.”
+              </p>
+              <div class="lp-testimonial-name">Emily Rodriguez</div>
+              <div class="lp-testimonial-role">Marketing Director, Bloom</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Choose Your Plan</h3>
+            <p class="lp-section-subtitle">
+              Pricing cards below use your current spacing, radius, and colors.
+            </p>
+          </div>
+          <div class="lp-pricing-grid">
+            <article class="card lp-pricing-card">
+              <h4>Starter</h4>
+              <div class="lp-pricing-price">$2,999<span>/project</span></div>
+              <ul class="lp-pricing-features">
+                <li>5‑page website</li>
+                <li>Responsive design</li>
+                <li>Basic SEO</li>
+                <li>Contact form</li>
+              </ul>
+              <button class="btn-secondary" type="button">Get Started</button>
+            </article>
+            <article class="card lp-pricing-card lp-pricing-card--featured">
+              <div class="lp-pricing-tag">Most Popular</div>
+              <h4>Professional</h4>
+              <div class="lp-pricing-price">$5,999<span>/project</span></div>
+              <ul class="lp-pricing-features">
+                <li>10‑page website</li>
+                <li>Advanced SEO</li>
+                <li>CMS integration</li>
+                <li>Analytics setup</li>
+              </ul>
+              <button class="btn-primary" type="button">Get Started</button>
+            </article>
+            <article class="card lp-pricing-card">
+              <h4>Enterprise</h4>
+              <div class="lp-pricing-price">$9,999<span>/project</span></div>
+              <ul class="lp-pricing-features">
+                <li>Unlimited pages</li>
+                <li>E‑commerce integration</li>
+                <li>Custom features</li>
+                <li>Priority support</li>
+              </ul>
+              <button class="btn-secondary" type="button">Contact Sales</button>
+            </article>
+          </div>
+        </section>
       </div>
     </section>
   </section>

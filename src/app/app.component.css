@@ -4,7 +4,7 @@
 }
 
 .shell {
-  max-width: 1200px;
+  max-width: 95%;
   margin: 0 auto;
   padding: 24px 16px 40px;
   box-sizing: border-box;
@@ -27,17 +27,22 @@
 
 .shell-body {
   display: flex;
-  gap: 24px;
   align-items: flex-start;
 }
 
 .controls {
+  position: fixed;
+  margin-left: 2%;
+  margin-top: 10%;
   flex: 0 0 320px;
   padding: 16px 16px 20px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   box-sizing: border-box;
+  overflow-y: scroll;
+  height: 50%;
 }
 
 .controls h2 {
@@ -133,7 +138,7 @@ select {
 }
 
 .preview {
-  flex: 1;
+  width: 100%;
   padding: 1px;
   border-radius: 10px;
   background: linear-gradient(to bottom right, #e5e7eb, #d1d5db);

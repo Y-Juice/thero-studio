@@ -232,6 +232,9 @@ select {
 
 .preview-window[data-style='modern-rounded'] .btn-secondary {
   border-radius: calc(var(--border-radius, 8px) * 1.4);
+  background-color: var(--secondary-color, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
 }
 
 .preview-window[data-style='modern-rounded'] .lp-section-title {

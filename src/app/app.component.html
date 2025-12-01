@@ -9,6 +9,18 @@
       <h2>Design tokens</h2>
 
       <div class="field-group">
+        <h3>Style presets</h3>
+        <label>
+          <span>Preset</span>
+          <select [(ngModel)]="currentStyle" (ngModelChange)="applyStylePreset($event)">
+            <option *ngFor="let preset of stylePresets" [value]="preset.id">
+              {{ preset.label }}
+            </option>
+          </select>
+        </label>
+      </div>
+
+      <div class="field-group">
         <h3>Colors</h3>
         <div class="field-row">
           <label>
@@ -110,7 +122,7 @@
     </section>
 
     <section class="preview" [ngStyle]="previewStyles">
-      <div class="preview-window">
+      <div class="preview-window" [attr.data-style]="currentStyle">
         <!-- Top navigation -->
         <nav class="lp-nav">
           <div class="lp-nav-left">
@@ -212,7 +224,7 @@
         <section class="lp-section">
           <div class="lp-section-header">
             <h3 class="lp-section-title">What Our Clients Say</h3>
-          </div>
+    </div>
           <div class="lp-testimonials-grid">
             <article class="card lp-testimonial-card">
               <div class="lp-stars">★★★★★</div>
@@ -241,7 +253,7 @@
               <div class="lp-testimonial-name">Emily Rodriguez</div>
               <div class="lp-testimonial-role">Marketing Director, Bloom</div>
             </article>
-          </div>
+      </div>
         </section>
 
         <!-- Pricing -->
@@ -251,7 +263,7 @@
             <p class="lp-section-subtitle">
               Pricing cards below use your current spacing, radius, and colors.
             </p>
-          </div>
+      </div>
           <div class="lp-pricing-grid">
             <article class="card lp-pricing-card">
               <h4>Starter</h4>
@@ -287,9 +299,9 @@
               </ul>
               <button class="btn-secondary" type="button">Contact Sales</button>
             </article>
-          </div>
+    </div>
         </section>
-      </div>
+  </div>
     </section>
   </section>
 </main>

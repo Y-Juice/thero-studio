@@ -86,12 +86,13 @@ input[type='color'] {
 
 input[type='number'],
 select {
-  height: 32px;
+  height: 34px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
   padding: 0 8px;
   font-size: 13px;
   box-sizing: border-box;
+  background-color: #ffffff;
 }
 
 .export-button {
@@ -220,6 +221,54 @@ select {
   background-color: rgba(79, 70, 229, 0.08);
   color: var(--primary-color, #4f46e5);
   font-size: 12px;
+}
+
+/* Variants for style presets */
+
+.preview-window[data-style='modern-rounded'] .btn-primary {
+  border-radius: calc(var(--border-radius, 8px) * 1.4);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+}
+
+.preview-window[data-style='modern-rounded'] .btn-secondary {
+  border-radius: calc(var(--border-radius, 8px) * 1.4);
+}
+
+.preview-window[data-style='modern-rounded'] .lp-section-title {
+  letter-spacing: 0.02em;
+}
+
+.preview-window[data-style='minimal-sharp'] .btn-primary,
+.preview-window[data-style='minimal-sharp'] .btn-secondary {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.preview-window[data-style='minimal-sharp'] .card {
+  border-radius: 4px;
+  box-shadow: none;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.preview-window[data-style='minimal-sharp'] .lp-section-title {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+}
+
+.preview-window[data-style='editorial-soft'] .lp-hero-text h2,
+.preview-window[data-style='editorial-soft'] .lp-section-title {
+  font-size: 26px;
+  letter-spacing: 0.01em;
+}
+
+.preview-window[data-style='editorial-soft'] .card {
+  border-radius: calc(var(--border-radius, 8px) * 1.5);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+}
+
+.preview-window[data-style='editorial-soft'] .lp-section-header {
+  text-align: left;
 }
 
 /* Landing page layout inside preview */

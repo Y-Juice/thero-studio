@@ -1,16 +1,48 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgStyle } from '@angular/common';
+import { NgStyle, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, NgStyle],
+  imports: [FormsModule, NgStyle, NgFor],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'Thero Studio';
+
+  stylePresets = [
+    {
+      id: 'modern-rounded',
+      label: 'Modern rounded',
+      changes: {
+        borderRadius: 12,
+        spacingUnit: 10,
+        fontFamilyHeading: '"Inter", system-ui, sans-serif'
+      }
+    },
+    {
+      id: 'minimal-sharp',
+      label: 'Minimal sharp',
+      changes: {
+        borderRadius: 2,
+        spacingUnit: 8,
+        fontFamilyHeading: '"Roboto", system-ui, sans-serif'
+      }
+    },
+    {
+      id: 'editorial-soft',
+      label: 'Editorial soft',
+      changes: {
+        borderRadius: 16,
+        spacingUnit: 12,
+        fontFamilyHeading: '"Georgia", "Times New Roman", serif'
+      }
+    }
+  ];
+
+  currentStyle = this.stylePresets[0].id;
 
   design = {
     primaryColor: '#4f46e5',
@@ -41,6 +73,19 @@ export class AppComponent {
       '--spacing-unit': this.design.spacingUnit + 'px',
       '--border-radius': this.design.borderRadius + 'px'
     } as { [key: string]: string };
+  }
+
+  applyStylePreset(presetId: string) {
+    this.currentStyle = presetId;
+    const preset = this.stylePresets.find((p) => p.id === presetId);
+    if (!preset) {
+      return;
+    }
+
+    this.design = {
+      ...this.design,
+      ...preset.changes
+    };
   }
 
   downloadCss() {

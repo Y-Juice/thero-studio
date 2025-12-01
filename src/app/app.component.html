@@ -24,36 +24,131 @@
         <h3>Colors</h3>
         <div class="field-row">
           <label>
-            <span>Primary color</span>
+            <div class="color-label-header">
+              <span>Primary color</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['primaryColor']"
+                (click)="toggleLock('primaryColor'); $event.stopPropagation()"
+              >
+                {{ locks['primaryColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
             <input type="color" [(ngModel)]="design.primaryColor" />
           </label>
           <label>
-            <span>Secondary color</span>
+            <div class="color-label-header">
+              <span>Secondary color</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['secondaryColor']"
+                (click)="toggleLock('secondaryColor'); $event.stopPropagation()"
+              >
+                {{ locks['secondaryColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
             <input type="color" [(ngModel)]="design.secondaryColor" />
           </label>
         </div>
 
         <div class="field-row">
           <label>
-            <span>Background</span>
-            <input type="color" [(ngModel)]="design.backgroundColor" />
+            <div class="color-label-header">
+              <span>Accent</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['accentColor']"
+                (click)="toggleLock('accentColor'); $event.stopPropagation()"
+              >
+                {{ locks['accentColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
+            <input type="color" [(ngModel)]="design.accentColor" />
           </label>
           <label>
-            <span>Surface</span>
-            <input type="color" [(ngModel)]="design.surfaceColor" />
+            <div class="color-label-header">
+              <span>Success</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['successColor']"
+                (click)="toggleLock('successColor'); $event.stopPropagation()"
+              >
+                {{ locks['successColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
+            <input type="color" [(ngModel)]="design.successColor" />
           </label>
         </div>
 
         <div class="field-row">
           <label>
-            <span>Text</span>
+            <div class="color-label-header">
+              <span>Error</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['errorColor']"
+                (click)="toggleLock('errorColor'); $event.stopPropagation()"
+              >
+                {{ locks['errorColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
+            <input type="color" [(ngModel)]="design.errorColor" />
+          </label>
+          <label>
+            <div class="color-label-header">
+              <span>Warning</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['warningColor']"
+                (click)="toggleLock('warningColor'); $event.stopPropagation()"
+              >
+                {{ locks['warningColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
+            <input type="color" [(ngModel)]="design.warningColor" />
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label>
+            <div class="color-label-header">
+              <span>Text</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['textColor']"
+                (click)="toggleLock('textColor'); $event.stopPropagation()"
+              >
+                {{ locks['textColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
             <input type="color" [(ngModel)]="design.textColor" />
           </label>
           <label>
-            <span>Muted text</span>
+            <div class="color-label-header">
+              <span>Text muted</span>
+              <button
+                type="button"
+                class="lock-button"
+                [class.locked]="locks['mutedTextColor']"
+                (click)="toggleLock('mutedTextColor'); $event.stopPropagation()"
+              >
+                {{ locks['mutedTextColor'] ? '🔒' : '🔓' }}
+              </button>
+            </div>
             <input type="color" [(ngModel)]="design.mutedTextColor" />
           </label>
         </div>
+
+        <button class="export-button" type="button" (click)="randomizeColors()">
+          Randomize colors
+        </button>
       </div>
 
       <div class="field-group">
@@ -263,7 +358,7 @@
             <p class="lp-section-subtitle">
               Pricing cards below use your current spacing, radius, and colors.
             </p>
-      </div>
+          </div>
           <div class="lp-pricing-grid">
             <article class="card lp-pricing-card">
               <h4>Starter</h4>
@@ -299,6 +394,36 @@
               </ul>
               <button class="btn-secondary" type="button">Contact Sales</button>
             </article>
+    </div>
+        </section>
+
+        <!-- Color roles preview -->
+        <section class="lp-section lp-section-tokens">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Color roles</h3>
+            <p class="lp-section-subtitle">
+              A quick overview of how your semantic colors look.
+            </p>
+          </div>
+          <div class="lp-token-row">
+            <div class="lp-token-swatch lp-token-swatch--primary">
+              <span>Primary</span>
+            </div>
+            <div class="lp-token-swatch lp-token-swatch--secondary">
+              <span>Secondary</span>
+            </div>
+            <div class="lp-token-swatch lp-token-swatch--accent">
+              <span>Accent</span>
+            </div>
+            <div class="lp-token-swatch lp-token-swatch--success">
+              <span>Success</span>
+    </div>
+            <div class="lp-token-swatch lp-token-swatch--warning">
+              <span>Warning</span>
+      </div>
+            <div class="lp-token-swatch lp-token-swatch--error">
+              <span>Error</span>
+      </div>
     </div>
         </section>
   </div>

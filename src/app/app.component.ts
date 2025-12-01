@@ -47,6 +47,10 @@ export class AppComponent {
   design = {
     primaryColor: '#4f46e5',
     secondaryColor: '#ec4899',
+    accentColor: '#f59e0b',
+    successColor: '#22c55e',
+    errorColor: '#ef4444',
+    warningColor: '#eab308',
     backgroundColor: '#f9fafb',
     surfaceColor: '#ffffff',
     textColor: '#111827',
@@ -59,10 +63,25 @@ export class AppComponent {
     borderRadius: 8
   };
 
+  locks: { [key: string]: boolean } = {
+    primaryColor: false,
+    secondaryColor: false,
+    accentColor: false,
+    successColor: false,
+    errorColor: false,
+    warningColor: false,
+    textColor: false,
+    mutedTextColor: false
+  };
+
   get previewStyles() {
     return {
       '--primary-color': this.design.primaryColor,
       '--secondary-color': this.design.secondaryColor,
+      '--accent-color': this.design.accentColor,
+      '--success-color': this.design.successColor,
+      '--error-color': this.design.errorColor,
+      '--warning-color': this.design.warningColor,
       '--background-color': this.design.backgroundColor,
       '--surface-color': this.design.surfaceColor,
       '--text-color': this.design.textColor,
@@ -88,6 +107,36 @@ export class AppComponent {
     };
   }
 
+  randomizeColors() {
+    const keys = [
+      'primaryColor',
+      'secondaryColor',
+      'accentColor',
+      'successColor',
+      'errorColor',
+      'warningColor',
+      'textColor',
+      'mutedTextColor'
+    ] as const;
+
+    keys.forEach((key) => {
+      if (!this.locks[key]) {
+        (this.design as any)[key] = this.randomHexColor();
+      }
+    });
+  }
+
+  toggleLock(key: string) {
+    this.locks[key] = !this.locks[key];
+  }
+
+  private randomHexColor(): string {
+    const value = Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, '0');
+    return `#${value}`;
+  }
+
   downloadCss() {
     const css = this.generateCss();
     const blob = new Blob([css], { type: 'text/css' });
@@ -108,6 +157,10 @@ export class AppComponent {
       ':root {',
       `  --primary-color: ${d.primaryColor};`,
       `  --secondary-color: ${d.secondaryColor};`,
+       `  --accent-color: ${d.accentColor};`,
+       `  --success-color: ${d.successColor};`,
+       `  --error-color: ${d.errorColor};`,
+       `  --warning-color: ${d.warningColor};`,
       `  --background-color: ${d.backgroundColor};`,
       `  --surface-color: ${d.surfaceColor};`,
       `  --text-color: ${d.textColor};`,
@@ -138,6 +191,25 @@ export class AppComponent {
       '  border-radius: var(--border-radius);',
       '  padding: calc(var(--spacing-unit) * 2);',
       '  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);',
+      '}',
+      '',
+      '.badge-accent {',
+      '  background-color: var(--accent-color);',
+      '  color: #ffffff;',
+      '  border-radius: 999px;',
+      '  padding: 0.25rem 0.75rem;',
+      '}',
+      '',
+      '.text-success {',
+      '  color: var(--success-color);',
+      '}',
+      '',
+      '.text-error {',
+      '  color: var(--error-color);',
+      '}',
+      '',
+      '.text-warning {',
+      '  color: var(--warning-color);',
       '}',
       ''
     ].join('\n');

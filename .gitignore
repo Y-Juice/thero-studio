@@ -37,6 +37,9 @@ yarn-error.log
 testem.log
 /typings
 
+# Local environment file containing sensitive keys
+/src/environments/environment.local.ts
+
 # System files
 .DS_Store
 Thumbs.db

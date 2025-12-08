@@ -246,7 +246,7 @@
 
           <div *ngIf="loadingFonts">Searching fonts…</div>
           <ul *ngIf="fontResults?.length" style="margin-top:8px;max-height:320px;overflow:auto;padding-left:0;list-style:none;">
-            <li *ngFor="let f of fontResults" style="display:flex;align-items:center;justify-content:space-between;padding:6px 4px;border-bottom:1px solid #eee;" (mouseenter)="previewFont(f.family, f.variants)">
+            <li *ngFor="let f of fontResults" style="display:flex;align-items:center;justify-content:space-between;padding:6px 4px;border-bottom:1px solid #eee;" (mouseenter)="previewFont(f.family, f.variants)" (mouseleave)="removePreviewFont(f.family)">
               <div>
                 <div style="font-size:14px">{{ f.family }}</div>
                 <div style="font-size:12px;color:#6b7280">{{ f.category || '' }}</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { NgStyle, NgFor, NgIf } from '@angular/common';
 
@@ -74,7 +75,9 @@ export class AppComponent implements OnInit {
   googleFontHeading = '';
 
   // Google Fonts searcher state
-  googleApiKey = ''; // optional — if provided will query Google Fonts Developer API
+  // API key is read from `src/environments/environment.ts` so sensitive keys
+  // can be placed into a local file (gitignored) during development.
+  googleApiKey = environment.googleFontsApiKey || ''; // optional — if provided will query Google Fonts Developer API
   fontSearchTerm = '';
   fontResults: Array<{ family: string; category?: string; variants?: string[] }> = [];
   loadingFonts = false;
@@ -177,6 +180,13 @@ export class AppComponent implements OnInit {
       const savedKey = localStorage.getItem('thero.googleApiKey');
       if (savedKey) {
         this.googleApiKey = savedKey;
+      }
+    } catch (e) {}
+    // If no saved key existed, persist the pre-populated key so searches work immediately
+    try {
+      const existing = localStorage.getItem('thero.googleApiKey');
+      if (!existing && this.googleApiKey) {
+        this.saveApiKey();
       }
     } catch (e) {}
   }
@@ -385,6 +395,16 @@ export class AppComponent implements OnInit {
       link.rel = 'stylesheet';
       link.href = href;
       document.head.appendChild(link);
+    }
+  }
+
+  /** Remove a preview font link injected by previewFont */
+  removePreviewFont(family: string) {
+    if (!family) return;
+    const id = `thero-preview-${family.replace(/\s+/g, '-').toLowerCase()}`;
+    const el = document.getElementById(id);
+    if (el && el.parentNode) {
+      el.parentNode.removeChild(el);
     }
   }
 

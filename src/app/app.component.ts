@@ -108,6 +108,31 @@ export class AppComponent implements OnInit {
   loadingFonts = false;
   // user-selected variants per family (e.g. ['400','700'])
   selectedVariants: { [family: string]: string[] } = {};
+
+  // Typography panel state
+  allFonts: Array<{ family: string; category?: string; variants?: string[] }> = [];
+  fontsLoaded = false;
+  
+  // Text types with their individual settings
+  textTypes: Array<{
+    id: string;
+    name: string;
+    fontFamily: string;
+    fontWeight: string;
+    isBold: boolean;
+    isItalic: boolean;
+    isUnderline: boolean;
+    fontSize: number;
+    isCustom: boolean;
+  }> = [
+    { id: 'title', name: 'Title', fontFamily: 'Open Sans', fontWeight: '700', isBold: false, isItalic: false, isUnderline: false, fontSize: 28, isCustom: false },
+    { id: 'subtitle', name: 'Subtitle', fontFamily: 'Open Sans', fontWeight: '500', isBold: false, isItalic: false, isUnderline: false, fontSize: 18, isCustom: false },
+    { id: 'paragraph', name: 'Paragraph', fontFamily: 'Open Sans', fontWeight: '400', isBold: false, isItalic: false, isUnderline: false, fontSize: 14, isCustom: false }
+  ];
+  
+  selectedTextTypeId: string = 'title';
+  newTextTypeName: string = '';
+  showAddTextType: boolean = false;
   // small fallback catalog when no API key is provided (popular fonts)
   private fallbackFonts = [
     'Roboto',
@@ -154,6 +179,10 @@ export class AppComponent implements OnInit {
   };
 
   get previewStyles() {
+    const titleType = this.textTypes.find(t => t.id === 'title') || this.textTypes[0];
+    const subtitleType = this.textTypes.find(t => t.id === 'subtitle') || this.textTypes[1];
+    const paragraphType = this.textTypes.find(t => t.id === 'paragraph') || this.textTypes[2];
+    
     return {
       '--primary-color': this.design.primaryColor,
       '--secondary-color': this.design.secondaryColor,
@@ -169,7 +198,25 @@ export class AppComponent implements OnInit {
       '--font-heading': this.design.fontFamilyHeading,
       '--base-font-size': this.design.baseFontSize + 'px',
       '--spacing-unit': this.design.spacingUnit + 'px',
-      '--border-radius': this.design.borderRadius + 'px'
+      '--border-radius': this.design.borderRadius + 'px',
+      // Title text type
+      '--title-font': `"${titleType.fontFamily}", system-ui, sans-serif`,
+      '--title-weight': titleType.isBold ? '700' : titleType.fontWeight,
+      '--title-style': titleType.isItalic ? 'italic' : 'normal',
+      '--title-decoration': titleType.isUnderline ? 'underline' : 'none',
+      '--title-size': titleType.fontSize + 'px',
+      // Subtitle text type
+      '--subtitle-font': `"${subtitleType.fontFamily}", system-ui, sans-serif`,
+      '--subtitle-weight': subtitleType.isBold ? '700' : subtitleType.fontWeight,
+      '--subtitle-style': subtitleType.isItalic ? 'italic' : 'normal',
+      '--subtitle-decoration': subtitleType.isUnderline ? 'underline' : 'none',
+      '--subtitle-size': subtitleType.fontSize + 'px',
+      // Paragraph text type
+      '--paragraph-font': `"${paragraphType.fontFamily}", system-ui, sans-serif`,
+      '--paragraph-weight': paragraphType.isBold ? '700' : paragraphType.fontWeight,
+      '--paragraph-style': paragraphType.isItalic ? 'italic' : 'normal',
+      '--paragraph-decoration': paragraphType.isUnderline ? 'underline' : 'none',
+      '--paragraph-size': paragraphType.fontSize + 'px'
     } as { [key: string]: string };
   }
 
@@ -216,6 +263,186 @@ export class AppComponent implements OnInit {
         this.saveApiKey();
       }
     } catch (e) {}
+    
+    // Load all Google Fonts for the typography panel
+    this.loadAllFonts();
+    
+    // Load fonts for default text types
+    this.loadAllTextTypeFonts();
+  }
+
+  /** Load all fonts from Google Fonts API */
+  async loadAllFonts() {
+    if (this.fontsLoaded) return;
+    
+    this.loadingFonts = true;
+    try {
+      if (this.googleApiKey && this.googleApiKey.trim() !== '') {
+        const url = `https://www.googleapis.com/webfonts/v1/webfonts?key=${encodeURIComponent(
+          this.googleApiKey.trim()
+        )}&sort=popularity`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error('Failed to fetch Google Fonts catalog');
+        }
+        const json = await res.json();
+        this.allFonts = (json.items || []).map((it: any) => ({
+          family: it.family,
+          category: it.category,
+          variants: it.variants || []
+        }));
+        this.fontsLoaded = true;
+      } else {
+        // Use fallback fonts if no API key
+        this.allFonts = this.fallbackFonts.map(f => ({ 
+          family: f, 
+          category: 'sans-serif',
+          variants: ['regular', '700'] 
+        }));
+        this.fontsLoaded = true;
+      }
+    } catch (e) {
+      // Fallback to bundled list on error
+      this.allFonts = this.fallbackFonts.map(f => ({ 
+        family: f, 
+        category: 'sans-serif',
+        variants: ['regular', '700'] 
+      }));
+      this.fontsLoaded = true;
+    } finally {
+      this.loadingFonts = false;
+    }
+  }
+
+  /** Get the currently selected text type */
+  get selectedTextType() {
+    return this.textTypes.find(t => t.id === this.selectedTextTypeId) || this.textTypes[0];
+  }
+
+  /** Select a text type to edit */
+  selectTextType(id: string) {
+    this.selectedTextTypeId = id;
+  }
+
+  /** Select a font from the list */
+  selectFont(family: string) {
+    const textType = this.selectedTextType;
+    if (textType) {
+      textType.fontFamily = family;
+      this.loadFontForTextType(textType);
+    }
+  }
+
+  /** Load font for a specific text type */
+  loadFontForTextType(textType: { fontFamily: string; fontWeight: string }) {
+    const family = textType.fontFamily;
+    const weight = textType.fontWeight || '400';
+    
+    // Build Google Fonts URL
+    const familyParam = encodeURIComponent(`${family}:wght@${weight}`.replace(/\s+/g, '+'));
+    const href = `https://fonts.googleapis.com/css2?family=${familyParam}&display=swap`;
+    const id = `thero-font-${family.replace(/\s+/g, '-').toLowerCase()}`;
+    
+    // Check if already loaded
+    if (!document.getElementById(id)) {
+      const link = document.createElement('link');
+      link.id = id;
+      link.rel = 'stylesheet';
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  }
+
+  /** Called when font weight input changes */
+  onFontWeightChange() {
+    const textType = this.selectedTextType;
+    if (textType) {
+      this.loadFontForTextType(textType);
+    }
+  }
+
+  /** Load all text type fonts on init */
+  loadAllTextTypeFonts() {
+    this.textTypes.forEach(textType => {
+      this.loadFontForTextType(textType);
+    });
+  }
+
+  /** Toggle bold for selected text type */
+  toggleBold() {
+    const textType = this.selectedTextType;
+    if (textType) {
+      textType.isBold = !textType.isBold;
+    }
+  }
+
+  /** Toggle italic for selected text type */
+  toggleItalic() {
+    const textType = this.selectedTextType;
+    if (textType) {
+      textType.isItalic = !textType.isItalic;
+    }
+  }
+
+  /** Toggle underline for selected text type */
+  toggleUnderline() {
+    const textType = this.selectedTextType;
+    if (textType) {
+      textType.isUnderline = !textType.isUnderline;
+    }
+  }
+
+  /** Get styles for a specific text type */
+  getTextTypeStyles(textType: { fontFamily: string; fontWeight: string; isBold: boolean; isItalic: boolean; isUnderline: boolean; fontSize: number }) {
+    return {
+      'font-family': `"${textType.fontFamily}", system-ui, sans-serif`,
+      'font-weight': textType.isBold ? '700' : textType.fontWeight,
+      'font-style': textType.isItalic ? 'italic' : 'normal',
+      'text-decoration': textType.isUnderline ? 'underline' : 'none',
+      'font-size': textType.fontSize + 'px'
+    };
+  }
+
+  /** Toggle show add text type input */
+  toggleAddTextType() {
+    this.showAddTextType = !this.showAddTextType;
+    this.newTextTypeName = '';
+  }
+
+  /** Add a new custom text type */
+  addCustomTextType() {
+    if (!this.newTextTypeName.trim()) return;
+    
+    const id = 'custom-' + Date.now();
+    const newTextType = {
+      id,
+      name: this.newTextTypeName.trim(),
+      fontFamily: 'Open Sans',
+      fontWeight: '400',
+      isBold: false,
+      isItalic: false,
+      isUnderline: false,
+      fontSize: 16,
+      isCustom: true
+    };
+    
+    this.textTypes.push(newTextType);
+    this.loadFontForTextType(newTextType);
+    
+    this.selectedTextTypeId = id;
+    this.newTextTypeName = '';
+    this.showAddTextType = false;
+  }
+
+  /** Remove a custom text type */
+  removeTextType(id: string) {
+    const index = this.textTypes.findIndex(t => t.id === id);
+    if (index > -1 && this.textTypes[index].isCustom) {
+      this.textTypes.splice(index, 1);
+      if (this.selectedTextTypeId === id) {
+        this.selectedTextTypeId = this.textTypes[0]?.id || 'title';
+      }
+    }
   }
 
   randomizeColors() {

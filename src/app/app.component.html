@@ -5,7 +5,20 @@
   </header>
 
   <section class="shell-body">
-    <section class="controls">
+    <div class="controls-shell">
+      <!-- Glassy toggle button in the top-left corner -->
+      <button
+        class="controls-toggle"
+        type="button"
+        (click)="toggleControls()"
+        [attr.aria-expanded]="isControlsOpen"
+        aria-label="Toggle design controls"
+      >
+        <span *ngIf="!isControlsOpen">⚙️</span>
+        <span *ngIf="isControlsOpen">✕</span>
+      </button>
+
+   <section class="controls" [class.is-open]="isControlsOpen">
       <h2>Design tokens</h2>
 
       <div class="field-group">
@@ -215,7 +228,7 @@
         Export CSS styleguide
       </button>
     </section>
-
+  </div>
     <section class="preview" [ngStyle]="previewStyles">
       <div class="preview-window" [attr.data-style]="currentStyle">
         <!-- Top navigation -->

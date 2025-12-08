@@ -12,6 +12,12 @@ import { NgStyle, NgFor } from '@angular/common';
 export class AppComponent {
   title = 'Thero Studio';
 
+  isControlsOpen = true; // panel open by default
+
+  toggleControls() {
+    this.isControlsOpen = !this.isControlsOpen;
+  }
+
   stylePresets = [
     {
       id: 'modern-rounded',

@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
 
   isControlsOpen = true; // panel open by default
   activeSection: string | null = null; // null = main menu, or 'colors', 'typography', 'spacing', 'components', 'preview', 'export'
+  isDarkMode = false;
 
   toggleControls() {
     this.isControlsOpen = !this.isControlsOpen;
@@ -26,6 +27,21 @@ export class AppComponent implements OnInit {
 
   goBackToMenu() {
     this.activeSection = null;
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      this.design.backgroundColor = '#1a1a2e';
+      this.design.surfaceColor = '#16213e';
+      this.design.textColor = '#eaeaea';
+      this.design.mutedTextColor = '#a0a0a0';
+    } else {
+      this.design.backgroundColor = '#f9fafb';
+      this.design.surfaceColor = '#ffffff';
+      this.design.textColor = '#111827';
+      this.design.mutedTextColor = '#6b7280';
+    }
   }
 
   stylePresets = [
@@ -131,6 +147,8 @@ export class AppComponent implements OnInit {
     successColor: false,
     errorColor: false,
     warningColor: false,
+    backgroundColor: false,
+    surfaceColor: false,
     textColor: false,
     mutedTextColor: false
   };
@@ -201,33 +219,152 @@ export class AppComponent implements OnInit {
   }
 
   randomizeColors() {
-    const keys = [
-      'primaryColor',
-      'secondaryColor',
-      'accentColor',
-      'successColor',
-      'errorColor',
-      'warningColor',
-      'textColor',
-      'mutedTextColor'
-    ] as const;
-
-    keys.forEach((key) => {
-      if (!this.locks[key]) {
-        (this.design as any)[key] = this.randomHexColor();
-      }
-    });
+    // Vibrant theme colors
+    if (!this.locks['primaryColor']) {
+      this.design.primaryColor = this.randomVibrantColor();
+    }
+    if (!this.locks['secondaryColor']) {
+      this.design.secondaryColor = this.randomVibrantColor();
+    }
+    if (!this.locks['accentColor']) {
+      this.design.accentColor = this.randomVibrantColor();
+    }
+    
+    // Semantic colors with appropriate hue ranges
+    if (!this.locks['successColor']) {
+      this.design.successColor = this.randomHueColor(100, 150); // Greens
+    }
+    if (!this.locks['errorColor']) {
+      this.design.errorColor = this.randomHueColor(0, 20); // Reds
+    }
+    if (!this.locks['warningColor']) {
+      this.design.warningColor = this.randomHueColor(35, 55); // Yellows/Oranges
+    }
+    
+    // Background - light or dark depending on mode
+    if (!this.locks['backgroundColor']) {
+      this.design.backgroundColor = this.isDarkMode 
+        ? this.randomDarkBackground() 
+        : this.randomLightNeutral();
+    }
+    
+    // Surface - slightly different from background
+    if (!this.locks['surfaceColor']) {
+      this.design.surfaceColor = this.isDarkMode 
+        ? this.randomDarkSurface() 
+        : this.randomSurfaceColor();
+    }
+    
+    // Text - contrasting color for readability
+    if (!this.locks['textColor']) {
+      this.design.textColor = this.isDarkMode 
+        ? this.randomLightText() 
+        : this.randomDarkColor();
+    }
+    
+    // Muted text - medium tones
+    if (!this.locks['mutedTextColor']) {
+      this.design.mutedTextColor = this.isDarkMode 
+        ? this.randomDarkMutedColor() 
+        : this.randomMutedColor();
+    }
   }
 
   toggleLock(key: string) {
     this.locks[key] = !this.locks[key];
   }
 
-  private randomHexColor(): string {
-    const value = Math.floor(Math.random() * 0xffffff)
-      .toString(16)
-      .padStart(6, '0');
-    return `#${value}`;
+  // Vibrant, saturated colors for theme
+  private randomVibrantColor(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = 60 + Math.floor(Math.random() * 30); // 60-90%
+    const lightness = 45 + Math.floor(Math.random() * 15); // 45-60%
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Color within a specific hue range
+  private randomHueColor(minHue: number, maxHue: number): string {
+    const hue = minHue + Math.floor(Math.random() * (maxHue - minHue));
+    const saturation = 60 + Math.floor(Math.random() * 25); // 60-85%
+    const lightness = 45 + Math.floor(Math.random() * 15); // 45-60%
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Light, neutral background colors
+  private randomLightNeutral(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 15); // 0-15% (very desaturated)
+    const lightness = 95 + Math.floor(Math.random() * 4); // 95-98% (very light)
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Surface colors - white or very light
+  private randomSurfaceColor(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 10); // 0-10%
+    const lightness = 98 + Math.floor(Math.random() * 2); // 98-100%
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Dark text colors
+  private randomDarkColor(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 20); // 0-20% (mostly gray)
+    const lightness = 8 + Math.floor(Math.random() * 12); // 8-20% (dark)
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Muted gray colors for secondary text
+  private randomMutedColor(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 15); // 0-15%
+    const lightness = 40 + Math.floor(Math.random() * 20); // 40-60% (medium gray)
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Dark background colors for dark mode
+  private randomDarkBackground(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = 10 + Math.floor(Math.random() * 20); // 10-30% (slightly saturated)
+    const lightness = 8 + Math.floor(Math.random() * 8); // 8-16% (very dark)
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Dark surface colors for dark mode (slightly lighter than background)
+  private randomDarkSurface(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = 10 + Math.floor(Math.random() * 15); // 10-25%
+    const lightness = 14 + Math.floor(Math.random() * 8); // 14-22%
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Light text colors for dark mode
+  private randomLightText(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 10); // 0-10%
+    const lightness = 88 + Math.floor(Math.random() * 10); // 88-98% (very light)
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Muted text for dark mode (lighter gray)
+  private randomDarkMutedColor(): string {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 15); // 0-15%
+    const lightness = 55 + Math.floor(Math.random() * 15); // 55-70% (lighter muted)
+    return this.hslToHex(hue, saturation, lightness);
+  }
+
+  // Convert HSL to Hex
+  private hslToHex(h: number, s: number, l: number): string {
+    s /= 100;
+    l /= 100;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n: number) => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
   }
 
   /**

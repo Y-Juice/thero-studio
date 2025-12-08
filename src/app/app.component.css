@@ -186,6 +186,145 @@
   background-color: #1f2937;
 }
 
+/* Colors Panel Styles */
+.color-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.color-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.color-item-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.color-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-lock-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px;
+  opacity: 0.5;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.color-lock-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.color-lock-btn.locked {
+  opacity: 1;
+}
+
+.color-swatch-wrapper {
+  position: relative;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.color-input-hidden {
+  position: absolute;
+  opacity: 0;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.color-swatch {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.color-swatch-wrapper:hover .color-swatch {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.randomize-button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.randomize-button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark-mode-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  border: none;
+  background-color: #d1d5db;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 200ms ease;
+}
+
+.toggle-switch.active {
+  background-color: #4f46e5;
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 200ms ease;
+}
+
+.toggle-switch.active .toggle-knob {
+  transform: translateX(20px);
+}
+
 /* Typography section specific styles */
 .google-font-row {
   display: flex;

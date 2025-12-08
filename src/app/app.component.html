@@ -77,133 +77,202 @@
           <span>Back</span>
         </button>
         <h3 class="section-title">Colors</h3>
-        <div class="field-group">
-          <div class="field-row">
-            <label>
-              <div class="color-label-header">
-                <span>Primary color</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['primaryColor']"
-                  (click)="toggleLock('primaryColor'); $event.stopPropagation()"
-                >
-                  {{ locks['primaryColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.primaryColor" />
-            </label>
-            <label>
-              <div class="color-label-header">
-                <span>Secondary color</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['secondaryColor']"
-                  (click)="toggleLock('secondaryColor'); $event.stopPropagation()"
-                >
-                  {{ locks['secondaryColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.secondaryColor" />
-            </label>
+        
+        <div class="color-list">
+          <div class="color-item">
+            <span class="color-item-label">Primary</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['primaryColor']"
+                (click)="toggleLock('primaryColor')"
+              >
+                {{ locks['primaryColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.primaryColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.primaryColor"></span>
+              </label>
+            </div>
           </div>
-
-          <div class="field-row">
-            <label>
-              <div class="color-label-header">
-                <span>Accent</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['accentColor']"
-                  (click)="toggleLock('accentColor'); $event.stopPropagation()"
-                >
-                  {{ locks['accentColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.accentColor" />
-            </label>
-            <label>
-              <div class="color-label-header">
-                <span>Success</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['successColor']"
-                  (click)="toggleLock('successColor'); $event.stopPropagation()"
-                >
-                  {{ locks['successColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.successColor" />
-            </label>
+          
+          <div class="color-item">
+            <span class="color-item-label">Secondary</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['secondaryColor']"
+                (click)="toggleLock('secondaryColor')"
+              >
+                {{ locks['secondaryColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.secondaryColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.secondaryColor"></span>
+              </label>
+            </div>
           </div>
-
-          <div class="field-row">
-            <label>
-              <div class="color-label-header">
-                <span>Error</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['errorColor']"
-                  (click)="toggleLock('errorColor'); $event.stopPropagation()"
-                >
-                  {{ locks['errorColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.errorColor" />
-            </label>
-            <label>
-              <div class="color-label-header">
-                <span>Warning</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['warningColor']"
-                  (click)="toggleLock('warningColor'); $event.stopPropagation()"
-                >
-                  {{ locks['warningColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.warningColor" />
-            </label>
+          
+          <div class="color-item">
+            <span class="color-item-label">Accent</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['accentColor']"
+                (click)="toggleLock('accentColor')"
+              >
+                {{ locks['accentColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.accentColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.accentColor"></span>
+              </label>
+            </div>
           </div>
-
-          <div class="field-row">
-            <label>
-              <div class="color-label-header">
-                <span>Text</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['textColor']"
-                  (click)="toggleLock('textColor'); $event.stopPropagation()"
-                >
-                  {{ locks['textColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.textColor" />
-            </label>
-            <label>
-              <div class="color-label-header">
-                <span>Text muted</span>
-                <button
-                  type="button"
-                  class="lock-button"
-                  [class.locked]="locks['mutedTextColor']"
-                  (click)="toggleLock('mutedTextColor'); $event.stopPropagation()"
-                >
-                  {{ locks['mutedTextColor'] ? '🔒' : '🔓' }}
-                </button>
-              </div>
-              <input type="color" [(ngModel)]="design.mutedTextColor" />
-            </label>
+          
+          <div class="color-item">
+            <span class="color-item-label">Success</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['successColor']"
+                (click)="toggleLock('successColor')"
+              >
+                {{ locks['successColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.successColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.successColor"></span>
+              </label>
+            </div>
           </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Warning</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['warningColor']"
+                (click)="toggleLock('warningColor')"
+              >
+                {{ locks['warningColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.warningColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.warningColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Error</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['errorColor']"
+                (click)="toggleLock('errorColor')"
+              >
+                {{ locks['errorColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.errorColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.errorColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Background</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['backgroundColor']"
+                (click)="toggleLock('backgroundColor')"
+              >
+                {{ locks['backgroundColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.backgroundColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.backgroundColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Surface</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['surfaceColor']"
+                (click)="toggleLock('surfaceColor')"
+              >
+                {{ locks['surfaceColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.surfaceColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.surfaceColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Text</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['textColor']"
+                (click)="toggleLock('textColor')"
+              >
+                {{ locks['textColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.textColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.textColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Text Muted</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['mutedTextColor']"
+                (click)="toggleLock('mutedTextColor')"
+              >
+                {{ locks['mutedTextColor'] ? '🔒' : '🔓' }}
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.mutedTextColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.mutedTextColor"></span>
+              </label>
+            </div>
+          </div>
+        </div>
 
-          <button class="action-button" type="button" (click)="randomizeColors()">
-            Randomize colors
+        <button class="randomize-button" type="button" (click)="randomizeColors()">
+          Randomize
+        </button>
+
+        <div class="dark-mode-toggle">
+          <span class="dark-mode-label">Dark mode</span>
+          <button 
+            type="button" 
+            class="toggle-switch" 
+            [class.active]="isDarkMode"
+            (click)="toggleDarkMode()"
+          >
+            <span class="toggle-knob"></span>
           </button>
         </div>
       </div>

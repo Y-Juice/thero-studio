@@ -14,9 +14,18 @@ export class AppComponent implements OnInit {
   title = 'Thero Studio';
 
   isControlsOpen = true; // panel open by default
+  activeSection: string | null = null; // null = main menu, or 'colors', 'typography', 'spacing', 'components', 'preview', 'export'
 
   toggleControls() {
     this.isControlsOpen = !this.isControlsOpen;
+  }
+
+  openSection(section: string) {
+    this.activeSection = section;
+  }
+
+  goBackToMenu() {
+    this.activeSection = null;
   }
 
   stylePresets = [

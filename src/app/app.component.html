@@ -19,292 +19,360 @@
       </button>
 
    <section class="controls" [class.is-open]="isControlsOpen">
-      <h2>Design tokens</h2>
-
-      <div class="field-group">
-        <h3>Style presets</h3>
-        <label>
-          <span>Preset</span>
-          <select [(ngModel)]="currentStyle" (ngModelChange)="applyStylePreset($event)">
-            <option *ngFor="let preset of stylePresets" [value]="preset.id">
-              {{ preset.label }}
-            </option>
-          </select>
-        </label>
+      <!-- Main Menu -->
+      <div class="nav-menu" *ngIf="!activeSection">
+        <h2>Design tokens</h2>
+        <nav class="nav-list">
+          <button class="nav-item" type="button" (click)="openSection('presets')">
+            <span class="nav-item-icon">🎨</span>
+            <span class="nav-item-label">Style Presets</span>
+            <span class="nav-item-arrow">→</span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('colors')">
+            <span class="nav-item-icon">🌈</span>
+            <span class="nav-item-label">Colors</span>
+            <span class="nav-item-arrow">→</span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('typography')">
+            <span class="nav-item-icon">✏️</span>
+            <span class="nav-item-label">Typography</span>
+            <span class="nav-item-arrow">→</span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('spacing')">
+            <span class="nav-item-icon">📐</span>
+            <span class="nav-item-label">Spacing</span>
+            <span class="nav-item-arrow">→</span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('export')">
+            <span class="nav-item-icon">📦</span>
+            <span class="nav-item-label">Export</span>
+            <span class="nav-item-arrow">→</span>
+          </button>
+        </nav>
       </div>
 
-      <div class="field-group">
-        <h3>Colors</h3>
-        <div class="field-row">
-          <label>
-            <div class="color-label-header">
-              <span>Primary color</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['primaryColor']"
-                (click)="toggleLock('primaryColor'); $event.stopPropagation()"
-              >
-                {{ locks['primaryColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.primaryColor" />
-          </label>
-          <label>
-            <div class="color-label-header">
-              <span>Secondary color</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['secondaryColor']"
-                (click)="toggleLock('secondaryColor'); $event.stopPropagation()"
-              >
-                {{ locks['secondaryColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.secondaryColor" />
-          </label>
-        </div>
-
-        <div class="field-row">
-          <label>
-            <div class="color-label-header">
-              <span>Accent</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['accentColor']"
-                (click)="toggleLock('accentColor'); $event.stopPropagation()"
-              >
-                {{ locks['accentColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.accentColor" />
-          </label>
-          <label>
-            <div class="color-label-header">
-              <span>Success</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['successColor']"
-                (click)="toggleLock('successColor'); $event.stopPropagation()"
-              >
-                {{ locks['successColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.successColor" />
-          </label>
-        </div>
-
-        <div class="field-row">
-          <label>
-            <div class="color-label-header">
-              <span>Error</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['errorColor']"
-                (click)="toggleLock('errorColor'); $event.stopPropagation()"
-              >
-                {{ locks['errorColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.errorColor" />
-          </label>
-          <label>
-            <div class="color-label-header">
-              <span>Warning</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['warningColor']"
-                (click)="toggleLock('warningColor'); $event.stopPropagation()"
-              >
-                {{ locks['warningColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.warningColor" />
-          </label>
-        </div>
-
-        <div class="field-row">
-          <label>
-            <div class="color-label-header">
-              <span>Text</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['textColor']"
-                (click)="toggleLock('textColor'); $event.stopPropagation()"
-              >
-                {{ locks['textColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.textColor" />
-          </label>
-          <label>
-            <div class="color-label-header">
-              <span>Text muted</span>
-              <button
-                type="button"
-                class="lock-button"
-                [class.locked]="locks['mutedTextColor']"
-                (click)="toggleLock('mutedTextColor'); $event.stopPropagation()"
-              >
-                {{ locks['mutedTextColor'] ? '🔒' : '🔓' }}
-              </button>
-            </div>
-            <input type="color" [(ngModel)]="design.mutedTextColor" />
-          </label>
-        </div>
-
-        <button class="export-button" type="button" (click)="randomizeColors()">
-          Randomize colors
+      <!-- Style Presets Section -->
+      <div class="nav-section" *ngIf="activeSection === 'presets'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <span>←</span>
+          <span>Back</span>
         </button>
+        <h3 class="section-title">Style Presets</h3>
+        <div class="field-group">
+          <label>
+            <span>Preset</span>
+            <select [(ngModel)]="currentStyle" (ngModelChange)="applyStylePreset($event)">
+              <option *ngFor="let preset of stylePresets" [value]="preset.id">
+                {{ preset.label }}
+              </option>
+            </select>
+          </label>
+        </div>
       </div>
 
-      <div class="field-group">
-        <h3>Typography</h3>
-        <label>
-          <span>Body font</span>
-          <select [(ngModel)]="design.fontFamilyBody">
-            <option
-              value='system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-            >
-              System UI
-            </option>
-            <option value='"Inter", system-ui, sans-serif'>Inter (fallback)</option>
-            <option value='"Roboto", system-ui, sans-serif'>Roboto (fallback)</option>
-          </select>
-        </label>
-
-        <label>
-          <span>Heading font</span>
-          <select [(ngModel)]="design.fontFamilyHeading">
-            <option value='"Georgia", "Times New Roman", serif'>Serif</option>
-            <option value='"Inter", system-ui, sans-serif'>Inter (fallback)</option>
-            <option value='"Roboto Slab", "Times New Roman", serif'>
-              Slab serif (fallback)
-            </option>
-          </select>
-        </label>
-
-        <label>
-          <span>Google Font (body)</span>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <select [(ngModel)]="googleFontBody" style="flex:1">
-              <option value="">— choose —</option>
-              <option value="Inter">Inter</option>
-              <option value="Roboto">Roboto</option>
-              <option value="Lato">Lato</option>
-              <option value="Montserrat">Montserrat</option>
-              <option value="Poppins">Poppins</option>
-              <option value="Nunito">Nunito</option>
-            </select>
-            <button type="button" (click)="loadGoogleFont(googleFontBody, 'body')">Load</button>
-            <button type="button" (click)="(googleFontBody=''); loadGoogleFont('', 'body')">Clear</button>
+      <!-- Colors Section -->
+      <div class="nav-section" *ngIf="activeSection === 'colors'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Colors</h3>
+        <div class="field-group">
+          <div class="field-row">
+            <label>
+              <div class="color-label-header">
+                <span>Primary color</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['primaryColor']"
+                  (click)="toggleLock('primaryColor'); $event.stopPropagation()"
+                >
+                  {{ locks['primaryColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.primaryColor" />
+            </label>
+            <label>
+              <div class="color-label-header">
+                <span>Secondary color</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['secondaryColor']"
+                  (click)="toggleLock('secondaryColor'); $event.stopPropagation()"
+                >
+                  {{ locks['secondaryColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.secondaryColor" />
+            </label>
           </div>
-          <small style="color:#6b7280">Pick a popular Google Font or paste a family spec (e.g. "Roboto:wght&#64;400;700") into the select (or extend UI later).</small>
-        </label>
 
-        <label>
-          <span>Google Font (heading)</span>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <select [(ngModel)]="googleFontHeading" style="flex:1">
-              <option value="">— choose —</option>
-              <option value="Merriweather">Merriweather</option>
-              <option value="Playfair Display">Playfair Display</option>
-              <option value="Roboto Slab">Roboto Slab</option>
-              <option value="Oswald">Oswald</option>
-              <option value="Bitter">Bitter</option>
-            </select>
-            <button type="button" (click)="loadGoogleFont(googleFontHeading, 'heading')">Load</button>
-            <button type="button" (click)="(googleFontHeading=''); loadGoogleFont('', 'heading')">Clear</button>
+          <div class="field-row">
+            <label>
+              <div class="color-label-header">
+                <span>Accent</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['accentColor']"
+                  (click)="toggleLock('accentColor'); $event.stopPropagation()"
+                >
+                  {{ locks['accentColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.accentColor" />
+            </label>
+            <label>
+              <div class="color-label-header">
+                <span>Success</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['successColor']"
+                  (click)="toggleLock('successColor'); $event.stopPropagation()"
+                >
+                  {{ locks['successColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.successColor" />
+            </label>
           </div>
-        </label>
+
+          <div class="field-row">
+            <label>
+              <div class="color-label-header">
+                <span>Error</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['errorColor']"
+                  (click)="toggleLock('errorColor'); $event.stopPropagation()"
+                >
+                  {{ locks['errorColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.errorColor" />
+            </label>
+            <label>
+              <div class="color-label-header">
+                <span>Warning</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['warningColor']"
+                  (click)="toggleLock('warningColor'); $event.stopPropagation()"
+                >
+                  {{ locks['warningColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.warningColor" />
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              <div class="color-label-header">
+                <span>Text</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['textColor']"
+                  (click)="toggleLock('textColor'); $event.stopPropagation()"
+                >
+                  {{ locks['textColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.textColor" />
+            </label>
+            <label>
+              <div class="color-label-header">
+                <span>Text muted</span>
+                <button
+                  type="button"
+                  class="lock-button"
+                  [class.locked]="locks['mutedTextColor']"
+                  (click)="toggleLock('mutedTextColor'); $event.stopPropagation()"
+                >
+                  {{ locks['mutedTextColor'] ? '🔒' : '🔓' }}
+                </button>
+              </div>
+              <input type="color" [(ngModel)]="design.mutedTextColor" />
+            </label>
+          </div>
+
+          <button class="action-button" type="button" (click)="randomizeColors()">
+            Randomize colors
+          </button>
+        </div>
+      </div>
+
+      <!-- Typography Section -->
+      <div class="nav-section" *ngIf="activeSection === 'typography'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Typography</h3>
+        <div class="field-group">
+          <label>
+            <span>Body font</span>
+            <select [(ngModel)]="design.fontFamilyBody">
+              <option
+                value='system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+              >
+                System UI
+              </option>
+              <option value='"Inter", system-ui, sans-serif'>Inter (fallback)</option>
+              <option value='"Roboto", system-ui, sans-serif'>Roboto (fallback)</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Heading font</span>
+            <select [(ngModel)]="design.fontFamilyHeading">
+              <option value='"Georgia", "Times New Roman", serif'>Serif</option>
+              <option value='"Inter", system-ui, sans-serif'>Inter (fallback)</option>
+              <option value='"Roboto Slab", "Times New Roman", serif'>
+                Slab serif (fallback)
+              </option>
+            </select>
+          </label>
+
+          <label>
+            <span>Google Font (body)</span>
+            <div class="google-font-row">
+              <select [(ngModel)]="googleFontBody">
+                <option value="">— choose —</option>
+                <option value="Inter">Inter</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Lato">Lato</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Poppins">Poppins</option>
+                <option value="Nunito">Nunito</option>
+              </select>
+              <button type="button" (click)="loadGoogleFont(googleFontBody, 'body')">Load</button>
+              <button type="button" (click)="(googleFontBody=''); loadGoogleFont('', 'body')">Clear</button>
+            </div>
+          </label>
+
+          <label>
+            <span>Google Font (heading)</span>
+            <div class="google-font-row">
+              <select [(ngModel)]="googleFontHeading">
+                <option value="">— choose —</option>
+                <option value="Merriweather">Merriweather</option>
+                <option value="Playfair Display">Playfair Display</option>
+                <option value="Roboto Slab">Roboto Slab</option>
+                <option value="Oswald">Oswald</option>
+                <option value="Bitter">Bitter</option>
+              </select>
+              <button type="button" (click)="loadGoogleFont(googleFontHeading, 'heading')">Load</button>
+              <button type="button" (click)="(googleFontHeading=''); loadGoogleFont('', 'heading')">Clear</button>
+            </div>
+          </label>
+
+          <label>
+            <span>Base font size (px)</span>
+            <input
+              type="number"
+              min="12"
+              max="22"
+              [(ngModel)]="design.baseFontSize"
+            />
+          </label>
+        </div>
 
         <div class="field-group">
-          <h3>Search Google Fonts</h3>
+          <h4 class="subsection-title">Search Google Fonts</h4>
           <label>
             <span>Google Fonts API key (optional)</span>
             <input type="text" [(ngModel)]="googleApiKey" placeholder="(optional) API key" />
-            <div style="margin-top:6px;display:flex;gap:8px;">
+            <div class="api-key-buttons">
               <button type="button" (click)="saveApiKey()">Save key</button>
               <button type="button" (click)="(googleApiKey=''); saveApiKey()">Clear key</button>
             </div>
-            <small style="color:#6b7280;display:block;margin-top:6px">Provide a Google Fonts Developer API key to search the full catalog. Otherwise a bundled subset will be searched.</small>
+            <small class="hint-text">Provide a Google Fonts Developer API key to search the full catalog.</small>
           </label>
 
           <label>
             <span>Search fonts</span>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <input type="text" [(ngModel)]="fontSearchTerm" (ngModelChange)="onSearchInput($event)" placeholder="Search fonts (e.g. roboto)" style="flex:1" />
+            <div class="search-font-row">
+              <input type="text" [(ngModel)]="fontSearchTerm" (ngModelChange)="onSearchInput($event)" placeholder="Search fonts (e.g. roboto)" />
               <button type="button" (click)="searchFonts()">Search</button>
             </div>
           </label>
 
-          <div *ngIf="loadingFonts">Searching fonts…</div>
-          <ul *ngIf="fontResults?.length" style="margin-top:8px;max-height:320px;overflow:auto;padding-left:0;list-style:none;">
-            <li *ngFor="let f of fontResults" style="display:flex;align-items:center;justify-content:space-between;padding:6px 4px;border-bottom:1px solid #eee;" (mouseenter)="previewFont(f.family, f.variants)" (mouseleave)="removePreviewFont(f.family)">
+          <div *ngIf="loadingFonts" class="loading-text">Searching fonts…</div>
+          <ul *ngIf="fontResults?.length" class="font-results-list">
+            <li *ngFor="let f of fontResults" class="font-result-item" (mouseenter)="previewFont(f.family, f.variants)" (mouseleave)="removePreviewFont(f.family)">
               <div>
-                <div style="font-size:14px">{{ f.family }}</div>
-                <div style="font-size:12px;color:#6b7280">{{ f.category || '' }}</div>
-                <div style="margin-top:6px">
-                  <small style="color:#6b7280">Weights:</small>
-                  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-                    <label *ngFor="let v of (f.variants || ['regular','700'])" style="font-size:12px;margin-right:6px;">
+                <div class="font-family-name">{{ f.family }}</div>
+                <div class="font-category">{{ f.category || '' }}</div>
+                <div class="font-weights">
+                  <small>Weights:</small>
+                  <div class="weight-checkboxes">
+                    <label *ngFor="let v of (f.variants || ['regular','700'])" class="weight-checkbox">
                       <input type="checkbox" [checked]="selectedVariants[f.family]?.includes(v) || false" (change)="toggleVariant(f.family, v, $any($event.target).checked)" /> {{ v }}
                     </label>
                   </div>
                 </div>
               </div>
-              <div style="display:flex;gap:6px;align-items:center;">
-                <button type="button" (click)="selectFontFromSearch(f.family,'body')">Load as body</button>
-                <button type="button" (click)="selectFontFromSearch(f.family,'heading')">Load as heading</button>
+              <div class="font-actions">
+                <button type="button" (click)="selectFontFromSearch(f.family,'body')">Body</button>
+                <button type="button" (click)="selectFontFromSearch(f.family,'heading')">Heading</button>
               </div>
             </li>
           </ul>
-          <div *ngIf="!loadingFonts && fontResults.length === 0 && fontSearchTerm">No fonts found for "{{fontSearchTerm}}"</div>
+          <div *ngIf="!loadingFonts && fontResults.length === 0 && fontSearchTerm" class="no-results">No fonts found for "{{fontSearchTerm}}"</div>
         </div>
-
-        <label>
-          <span>Base font size (px)</span>
-          <input
-            type="number"
-            min="12"
-            max="22"
-            [(ngModel)]="design.baseFontSize"
-          />
-        </label>
       </div>
 
-      <div class="field-group">
-        <h3>Spacing & radius</h3>
-        <label>
-          <span>Spacing unit (px)</span>
-          <input
-            type="number"
-            min="4"
-            max="24"
-            [(ngModel)]="design.spacingUnit"
-          />
-        </label>
+      <!-- Spacing Section -->
+      <div class="nav-section" *ngIf="activeSection === 'spacing'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Spacing & Radius</h3>
+        <div class="field-group">
+          <label>
+            <span>Spacing unit (px)</span>
+            <input
+              type="number"
+              min="4"
+              max="24"
+              [(ngModel)]="design.spacingUnit"
+            />
+          </label>
 
-        <label>
-          <span>Border radius (px)</span>
-          <input
-            type="number"
-            min="0"
-            max="32"
-            [(ngModel)]="design.borderRadius"
-          />
-        </label>
+          <label>
+            <span>Border radius (px)</span>
+            <input
+              type="number"
+              min="0"
+              max="32"
+              [(ngModel)]="design.borderRadius"
+            />
+          </label>
+        </div>
       </div>
 
-      <button class="export-button" type="button" (click)="downloadCss()">
-        Export CSS styleguide
-      </button>
+      <!-- Export Section -->
+      <div class="nav-section" *ngIf="activeSection === 'export'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Export</h3>
+        <div class="field-group">
+          <p class="export-description">Export your design tokens as a CSS file that you can use in your projects.</p>
+          <button class="export-button" type="button" (click)="downloadCss()">
+            Export CSS styleguide
+          </button>
+        </div>
+      </div>
     </section>
   </div>
     <section class="preview" [ngStyle]="previewStyles">

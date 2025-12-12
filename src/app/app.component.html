@@ -14,8 +14,14 @@
         [attr.aria-expanded]="isControlsOpen"
         aria-label="Toggle design controls"
       >
-        <span *ngIf="!isControlsOpen">⚙️</span>
-        <span *ngIf="isControlsOpen">✕</span>
+        <svg *ngIf="!isControlsOpen" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <svg *ngIf="isControlsOpen" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
       </button>
 
    <section class="controls" [class.is-open]="isControlsOpen">
@@ -24,29 +30,81 @@
         <h2>Design tokens</h2>
         <nav class="nav-list">
           <button class="nav-item" type="button" (click)="openSection('presets')">
-            <span class="nav-item-icon">🎨</span>
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="13.5" cy="6.5" r="2.5"></circle>
+                <circle cx="6.5" cy="17.5" r="2.5"></circle>
+                <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                <path d="M13.5 9v3.5L10 18"></path>
+                <path d="M13.5 12.5L17 18"></path>
+              </svg>
+            </span>
             <span class="nav-item-label">Style Presets</span>
-            <span class="nav-item-arrow">→</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
           </button>
           <button class="nav-item" type="button" (click)="openSection('colors')">
-            <span class="nav-item-icon">🌈</span>
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+              </svg>
+            </span>
             <span class="nav-item-label">Colors</span>
-            <span class="nav-item-arrow">→</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
           </button>
           <button class="nav-item" type="button" (click)="openSection('typography')">
-            <span class="nav-item-icon">✏️</span>
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                <line x1="9" y1="20" x2="15" y2="20"></line>
+                <line x1="12" y1="4" x2="12" y2="20"></line>
+              </svg>
+            </span>
             <span class="nav-item-label">Typography</span>
-            <span class="nav-item-arrow">→</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
           </button>
           <button class="nav-item" type="button" (click)="openSection('spacing')">
-            <span class="nav-item-icon">📐</span>
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 6H3"></path>
+                <path d="M21 12H9"></path>
+                <path d="M21 18H7"></path>
+                <path d="M3 12h2"></path>
+                <path d="M3 18h2"></path>
+              </svg>
+            </span>
             <span class="nav-item-label">Spacing</span>
-            <span class="nav-item-arrow">→</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
           </button>
           <button class="nav-item" type="button" (click)="openSection('export')">
-            <span class="nav-item-icon">📦</span>
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </span>
             <span class="nav-item-label">Export</span>
-            <span class="nav-item-arrow">→</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
           </button>
         </nav>
       </div>
@@ -54,7 +112,9 @@
       <!-- Style Presets Section -->
       <div class="nav-section" *ngIf="activeSection === 'presets'">
         <button class="nav-back" type="button" (click)="goBackToMenu()">
-          <span>←</span>
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           <span>Back</span>
         </button>
         <h3 class="section-title">Style Presets</h3>
@@ -73,7 +133,9 @@
       <!-- Colors Section -->
       <div class="nav-section" *ngIf="activeSection === 'colors'">
         <button class="nav-back" type="button" (click)="goBackToMenu()">
-          <span>←</span>
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           <span>Back</span>
         </button>
         <h3 class="section-title">Colors</h3>
@@ -88,7 +150,14 @@
                 [class.locked]="locks['primaryColor']"
                 (click)="toggleLock('primaryColor')"
               >
-                {{ locks['primaryColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['primaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['primaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.primaryColor" class="color-input-hidden" />
@@ -106,7 +175,14 @@
                 [class.locked]="locks['secondaryColor']"
                 (click)="toggleLock('secondaryColor')"
               >
-                {{ locks['secondaryColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['secondaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['secondaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.secondaryColor" class="color-input-hidden" />
@@ -124,7 +200,14 @@
                 [class.locked]="locks['accentColor']"
                 (click)="toggleLock('accentColor')"
               >
-                {{ locks['accentColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['accentColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['accentColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.accentColor" class="color-input-hidden" />
@@ -142,7 +225,14 @@
                 [class.locked]="locks['successColor']"
                 (click)="toggleLock('successColor')"
               >
-                {{ locks['successColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['successColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['successColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.successColor" class="color-input-hidden" />
@@ -160,7 +250,14 @@
                 [class.locked]="locks['warningColor']"
                 (click)="toggleLock('warningColor')"
               >
-                {{ locks['warningColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['warningColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['warningColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.warningColor" class="color-input-hidden" />
@@ -178,7 +275,14 @@
                 [class.locked]="locks['errorColor']"
                 (click)="toggleLock('errorColor')"
               >
-                {{ locks['errorColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['errorColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['errorColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.errorColor" class="color-input-hidden" />
@@ -196,7 +300,14 @@
                 [class.locked]="locks['backgroundColor']"
                 (click)="toggleLock('backgroundColor')"
               >
-                {{ locks['backgroundColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['backgroundColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['backgroundColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.backgroundColor" class="color-input-hidden" />
@@ -214,7 +325,14 @@
                 [class.locked]="locks['surfaceColor']"
                 (click)="toggleLock('surfaceColor')"
               >
-                {{ locks['surfaceColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['surfaceColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['surfaceColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.surfaceColor" class="color-input-hidden" />
@@ -232,7 +350,14 @@
                 [class.locked]="locks['textColor']"
                 (click)="toggleLock('textColor')"
               >
-                {{ locks['textColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['textColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['textColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.textColor" class="color-input-hidden" />
@@ -250,7 +375,14 @@
                 [class.locked]="locks['mutedTextColor']"
                 (click)="toggleLock('mutedTextColor')"
               >
-                {{ locks['mutedTextColor'] ? '🔒' : '🔓' }}
+                <svg *ngIf="locks['mutedTextColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['mutedTextColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
               </button>
               <label class="color-swatch-wrapper">
                 <input type="color" [(ngModel)]="design.mutedTextColor" class="color-input-hidden" />
@@ -280,7 +412,9 @@
       <!-- Typography Section -->
       <div class="nav-section" *ngIf="activeSection === 'typography'">
         <button class="nav-back" type="button" (click)="goBackToMenu()">
-          <span>←</span>
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           <span>Back</span>
         </button>
         <h3 class="section-title">Typography</h3>
@@ -301,7 +435,12 @@
                 type="button"
                 class="remove-text-type"
                 (click)="removeTextType(textType.id); $event.stopPropagation()"
-              >×</button>
+              >
+                <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
             
             <!-- Add Text Type Button -->
@@ -320,7 +459,12 @@
                 (keyup.enter)="addCustomTextType()"
               />
               <button type="button" class="add-btn" (click)="addCustomTextType()">Add</button>
-              <button type="button" class="cancel-btn" (click)="toggleAddTextType()">×</button>
+              <button type="button" class="cancel-btn" (click)="toggleAddTextType()">
+                <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
           </div>
           
@@ -391,21 +535,85 @@
       <!-- Spacing Section -->
       <div class="nav-section" *ngIf="activeSection === 'spacing'">
         <button class="nav-back" type="button" (click)="goBackToMenu()">
-          <span>←</span>
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           <span>Back</span>
         </button>
-        <h3 class="section-title">Spacing & Radius</h3>
-        <div class="field-group">
-          <label>
-            <span>Spacing unit (px)</span>
-            <input
-              type="number"
-              min="4"
-              max="24"
-              [(ngModel)]="design.spacingUnit"
-            />
-          </label>
-
+        <h3 class="section-title">Spacing</h3>
+        
+        <div class="spacing-categories">
+          <div class="spacing-category" *ngFor="let category of spacingCategories">
+            <!-- Category Header -->
+            <div class="spacing-category-header" (click)="toggleSpacingCategory(category.id)">
+              <span class="spacing-category-name">{{ category.name }}</span>
+              <button type="button" class="spacing-toggle-btn">
+                <svg *ngIf="category.isExpanded" class="icon-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <svg *ngIf="category.isExpanded" class="icon-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+                <svg *ngIf="!category.isExpanded" class="icon-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Category Content -->
+            <div class="spacing-category-content" *ngIf="category.isExpanded">
+              <div class="spacing-variable" *ngFor="let variable of category.variables">
+                <span class="spacing-variable-name">{{ variable.name }}</span>
+                <div class="spacing-variable-controls">
+                  <input 
+                    type="text" 
+                    class="spacing-value-input"
+                    [value]="variable.value + 'px'"
+                    (blur)="variable.value = +$any($event.target).value.replace('px', '')"
+                    (keyup.enter)="variable.value = +$any($event.target).value.replace('px', '')"
+                  />
+                  <button 
+                    type="button" 
+                    class="spacing-remove-btn"
+                    (click)="removeSpacingVariable(category.id, variable.id)"
+                  >
+                    <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Add Variable Button -->
+              <div class="spacing-add-row" *ngIf="!showAddSpacing[category.id]">
+                <button type="button" class="spacing-add-btn" (click)="showAddSpacingInput(category.id)">
+                  +
+                </button>
+              </div>
+              
+              <!-- Add Variable Input -->
+              <div class="spacing-add-input" *ngIf="showAddSpacing[category.id]">
+                <input 
+                  type="text" 
+                  [(ngModel)]="newSpacingName" 
+                  placeholder="Variable name"
+                  (keyup.enter)="addSpacingVariable(category.id)"
+                />
+                <button type="button" class="add-btn" (click)="addSpacingVariable(category.id)">Add</button>
+                <button type="button" class="cancel-btn" (click)="hideAddSpacingInput(category.id)">
+                  <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Border Radius (kept separate) -->
+        <div class="field-group spacing-radius-group">
           <label>
             <span>Border radius (px)</span>
             <input
@@ -421,14 +629,82 @@
       <!-- Export Section -->
       <div class="nav-section" *ngIf="activeSection === 'export'">
         <button class="nav-back" type="button" (click)="goBackToMenu()">
-          <span>←</span>
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           <span>Back</span>
         </button>
         <h3 class="section-title">Export</h3>
         <div class="field-group">
-          <p class="export-description">Export your design tokens as a CSS file that you can use in your projects.</p>
-          <button class="export-button" type="button" (click)="downloadCss()">
-            Export CSS styleguide
+          <p class="export-description">Export your design tokens as a CSS file or inside a working starter project.</p>
+          
+          <div class="export-options">
+            <label class="export-option" [class.selected]="exportType === 'css'">
+              <input 
+                type="radio" 
+                name="exportType" 
+                value="css" 
+                [(ngModel)]="exportType"
+              />
+              <span class="export-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </span>
+              <span class="export-option-text">
+                <span class="export-option-title">CSS Only</span>
+                <span class="export-option-desc">Download styleguide.css</span>
+              </span>
+            </label>
+            
+            <label class="export-option" [class.selected]="exportType === 'angular'">
+              <input 
+                type="radio" 
+                name="exportType" 
+                value="angular" 
+                [(ngModel)]="exportType"
+              />
+              <span class="export-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9.93 12.645h4.134L12 7.314l-2.07 5.331zM12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm4.776 15H14.57l-.858-2.152H10.29L9.43 16H7.224L12 4.328 16.776 16z"/>
+                </svg>
+              </span>
+              <span class="export-option-text">
+                <span class="export-option-title">Angular Starter</span>
+                <span class="export-option-desc">Angular 17 project with CSS</span>
+              </span>
+            </label>
+            
+            <label class="export-option" [class.selected]="exportType === 'react'">
+              <input 
+                type="radio" 
+                name="exportType" 
+                value="react" 
+                [(ngModel)]="exportType"
+              />
+              <span class="export-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="2.5"></circle>
+                  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1"></ellipse>
+                  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(60 12 12)"></ellipse>
+                  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(120 12 12)"></ellipse>
+                </svg>
+              </span>
+              <span class="export-option-text">
+                <span class="export-option-title">React Starter</span>
+                <span class="export-option-desc">React 18 project with CSS</span>
+              </span>
+            </label>
+          </div>
+          
+          <button class="export-button" type="button" (click)="exportProject()">
+            <span *ngIf="exportType === 'css'">Export CSS styleguide</span>
+            <span *ngIf="exportType === 'angular'">Download Angular Starter</span>
+            <span *ngIf="exportType === 'react'">Download React Starter</span>
           </button>
         </div>
       </div>
@@ -539,7 +815,13 @@
     </div>
           <div class="lp-testimonials-grid">
             <article class="card lp-testimonial-card">
-              <div class="lp-stars">★★★★★</div>
+              <div class="lp-stars">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
               <p>
                 “PixelCraft delivered a website that exceeded our expectations. The design
                 is both beautiful and functional.”
@@ -548,7 +830,13 @@
               <div class="lp-testimonial-role">CEO, TechVision</div>
             </article>
             <article class="card lp-testimonial-card">
-              <div class="lp-stars">★★★★★</div>
+              <div class="lp-stars">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
               <p>
                 “Our new site increased conversions by over 40%. Being able to preview the
                 style tokens made decisions easy.”
@@ -557,7 +845,13 @@
               <div class="lp-testimonial-role">Founder, GreenLeaf</div>
             </article>
             <article class="card lp-testimonial-card">
-              <div class="lp-stars">★★★★★</div>
+              <div class="lp-stars">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
               <p>
                 “Amazing attention to detail and creative solutions. The brand feels
                 consistent across every page.”

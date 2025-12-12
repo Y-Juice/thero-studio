@@ -1,8 +1,20 @@
 /* Global styles for Thero Studio MVP */
 
+:root {
+  --thero-font: 'Albert Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --thero-bg: #1a1a2e;
+  --thero-surface: #16213e;
+  --thero-text: #f8fafc;
+  --thero-text-muted: #94a3b8;
+  --thero-border: rgba(255, 255, 255, 0.08);
+  --thero-accent: #6366f1;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #f3f4f6;
+  background-color: var(--thero-bg);
+  font-family: var(--thero-font);
+  color: var(--thero-text);
 }

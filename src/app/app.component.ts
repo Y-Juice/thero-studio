@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { NgStyle, NgFor, NgIf } from '@angular/common';
+import JSZip from 'jszip';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit {
   isControlsOpen = true; // panel open by default
   activeSection: string | null = null; // null = main menu, or 'colors', 'typography', 'spacing', 'components', 'preview', 'export'
   isDarkMode = false;
+  exportType: 'css' | 'angular' | 'react' = 'css'; // export format selection
 
   toggleControls() {
     this.isControlsOpen = !this.isControlsOpen;
@@ -133,6 +135,38 @@ export class AppComponent implements OnInit {
   selectedTextTypeId: string = 'title';
   newTextTypeName: string = '';
   showAddTextType: boolean = false;
+
+  // Spacing variables organized by category
+  spacingCategories: Array<{
+    id: string;
+    name: string;
+    isExpanded: boolean;
+    variables: Array<{ id: string; name: string; value: number }>;
+  }> = [
+    {
+      id: 'margins',
+      name: 'Margins',
+      isExpanded: true,
+      variables: [
+        { id: 'side', name: 'Side', value: 16 },
+        { id: 'vertical', name: 'Vertical', value: 6 },
+        { id: 'small', name: 'Small', value: 10 }
+      ]
+    },
+    {
+      id: 'padding',
+      name: 'Padding',
+      isExpanded: false,
+      variables: [
+        { id: 'container', name: 'Container', value: 24 },
+        { id: 'card', name: 'Card', value: 16 },
+        { id: 'button', name: 'Button', value: 12 }
+      ]
+    }
+  ];
+  
+  newSpacingName: string = '';
+  showAddSpacing: { [categoryId: string]: boolean } = {};
   // small fallback catalog when no API key is provided (popular fonts)
   private fallbackFonts = [
     'Roboto',
@@ -441,6 +475,53 @@ export class AppComponent implements OnInit {
       this.textTypes.splice(index, 1);
       if (this.selectedTextTypeId === id) {
         this.selectedTextTypeId = this.textTypes[0]?.id || 'title';
+      }
+    }
+  }
+
+  /** Toggle spacing category expand/collapse */
+  toggleSpacingCategory(categoryId: string) {
+    const category = this.spacingCategories.find(c => c.id === categoryId);
+    if (category) {
+      category.isExpanded = !category.isExpanded;
+    }
+  }
+
+  /** Show add spacing input for a category */
+  showAddSpacingInput(categoryId: string) {
+    this.showAddSpacing[categoryId] = true;
+    this.newSpacingName = '';
+  }
+
+  /** Hide add spacing input */
+  hideAddSpacingInput(categoryId: string) {
+    this.showAddSpacing[categoryId] = false;
+    this.newSpacingName = '';
+  }
+
+  /** Add a new spacing variable to a category */
+  addSpacingVariable(categoryId: string) {
+    if (!this.newSpacingName.trim()) return;
+    
+    const category = this.spacingCategories.find(c => c.id === categoryId);
+    if (category) {
+      const id = 'spacing-' + Date.now();
+      category.variables.push({
+        id,
+        name: this.newSpacingName.trim(),
+        value: 8
+      });
+      this.hideAddSpacingInput(categoryId);
+    }
+  }
+
+  /** Remove a spacing variable */
+  removeSpacingVariable(categoryId: string, variableId: string) {
+    const category = this.spacingCategories.find(c => c.id === categoryId);
+    if (category) {
+      const index = category.variables.findIndex(v => v.id === variableId);
+      if (index > -1) {
+        category.variables.splice(index, 1);
       }
     }
   }
@@ -794,6 +875,481 @@ export class AppComponent implements OnInit {
     URL.revokeObjectURL(url);
   }
 
+  /** Export based on selected type */
+  async exportProject() {
+    switch (this.exportType) {
+      case 'css':
+        this.downloadCss();
+        break;
+      case 'angular':
+        await this.downloadAngularStarter();
+        break;
+      case 'react':
+        await this.downloadReactStarter();
+        break;
+    }
+  }
+
+  /** Download Angular starter project with CSS */
+  async downloadAngularStarter() {
+    const zip = new JSZip();
+    const css = this.generateCss();
+
+    // Create Angular project structure
+    const projectName = 'my-angular-app';
+    const folder = zip.folder(projectName);
+    if (!folder) return;
+
+    // package.json
+    folder.file('package.json', JSON.stringify({
+      name: projectName,
+      version: '0.0.0',
+      scripts: {
+        ng: 'ng',
+        start: 'ng serve',
+        build: 'ng build',
+        watch: 'ng build --watch --configuration development',
+        test: 'ng test'
+      },
+      private: true,
+      dependencies: {
+        '@angular/animations': '^17.3.0',
+        '@angular/common': '^17.3.0',
+        '@angular/compiler': '^17.3.0',
+        '@angular/core': '^17.3.0',
+        '@angular/forms': '^17.3.0',
+        '@angular/platform-browser': '^17.3.0',
+        '@angular/platform-browser-dynamic': '^17.3.0',
+        '@angular/router': '^17.3.0',
+        'rxjs': '~7.8.0',
+        'tslib': '^2.3.0',
+        'zone.js': '~0.14.3'
+      },
+      devDependencies: {
+        '@angular-devkit/build-angular': '^17.3.0',
+        '@angular/cli': '^17.3.0',
+        '@angular/compiler-cli': '^17.3.0',
+        'typescript': '~5.4.2'
+      }
+    }, null, 2));
+
+    // angular.json
+    folder.file('angular.json', JSON.stringify({
+      $schema: './node_modules/@angular/cli/lib/config/schema.json',
+      version: 1,
+      newProjectRoot: 'projects',
+      projects: {
+        [projectName]: {
+          projectType: 'application',
+          root: '',
+          sourceRoot: 'src',
+          prefix: 'app',
+          architect: {
+            build: {
+              builder: '@angular-devkit/build-angular:application',
+              options: {
+                outputPath: 'dist/' + projectName,
+                index: 'src/index.html',
+                browser: 'src/main.ts',
+                polyfills: ['zone.js'],
+                tsConfig: 'tsconfig.app.json',
+                styles: ['src/styles.css'],
+                scripts: []
+              },
+              configurations: {
+                production: {
+                  optimization: {
+                    fonts: false
+                  }
+                },
+                development: {
+                  optimization: false
+                }
+              },
+              defaultConfiguration: 'development'
+            },
+            serve: {
+              builder: '@angular-devkit/build-angular:dev-server',
+              configurations: {
+                development: { buildTarget: projectName + ':build:development' }
+              },
+              defaultConfiguration: 'development'
+            }
+          }
+        }
+      }
+    }, null, 2));
+
+    // tsconfig.json
+    folder.file('tsconfig.json', JSON.stringify({
+      compileOnSave: false,
+      compilerOptions: {
+        outDir: './dist/out-tsc',
+        strict: true,
+        noImplicitOverride: true,
+        noPropertyAccessFromIndexSignature: true,
+        noImplicitReturns: true,
+        noFallthroughCasesInSwitch: true,
+        skipLibCheck: true,
+        esModuleInterop: true,
+        sourceMap: true,
+        declaration: false,
+        experimentalDecorators: true,
+        moduleResolution: 'bundler',
+        importHelpers: true,
+        target: 'ES2022',
+        module: 'ES2022',
+        lib: ['ES2022', 'dom']
+      },
+      angularCompilerOptions: {
+        enableI18nLegacyMessageIdFormat: false,
+        strictInjectionParameters: true,
+        strictInputAccessModifiers: true,
+        strictTemplates: true
+      }
+    }, null, 2));
+
+    // tsconfig.app.json
+    folder.file('tsconfig.app.json', JSON.stringify({
+      extends: './tsconfig.json',
+      compilerOptions: {
+        outDir: './out-tsc/app',
+        types: []
+      },
+      files: ['src/main.ts'],
+      include: ['src/**/*.d.ts']
+    }, null, 2));
+
+    // src folder
+    const srcFolder = folder.folder('src');
+    if (!srcFolder) return;
+
+    // src/styles.css - the generated CSS
+    srcFolder.file('styles.css', css);
+
+    // src/index.html
+    srcFolder.file('index.html', `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My Angular App</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>`);
+
+    // src/main.ts
+    srcFolder.file('main.ts', `import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent)
+  .catch((err) => console.error(err));`);
+
+    // src/app folder
+    const appFolder = srcFolder.folder('app');
+    if (!appFolder) return;
+
+    // src/app/app.component.ts
+    appFolder.file('app.component.ts', `import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'My Angular App';
+}`);
+
+    // src/app/app.component.html
+    appFolder.file('app.component.html', `<main>
+  <h1>Welcome to {{ title }}</h1>
+  <p>Your design tokens are ready to use!</p>
+  
+  <section class="demo-section">
+    <h2>Button Examples</h2>
+    <button class="btn-primary">Primary Button</button>
+    <button class="btn-secondary">Secondary Button</button>
+  </section>
+
+  <section class="demo-section">
+    <div class="card">
+      <h3>Example Card</h3>
+      <p>This card uses your custom design tokens for styling.</p>
+      <span class="badge-accent">Accent Badge</span>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Status Colors</h2>
+    <p class="text-success">Success message</p>
+    <p class="text-warning">Warning message</p>
+    <p class="text-error">Error message</p>
+  </section>
+</main>`);
+
+    // src/app/app.component.css
+    appFolder.file('app.component.css', `main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: calc(var(--spacing-unit) * 3);
+}
+
+h1 {
+  font-family: var(--font-heading);
+  color: var(--primary-color);
+}
+
+.demo-section {
+  margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+.demo-section h2 {
+  font-family: var(--font-heading);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+button {
+  margin-right: calc(var(--spacing-unit));
+  cursor: pointer;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+}`);
+
+    // README.md
+    folder.file('README.md', `# My Angular App
+
+This Angular project was generated with design tokens from Thero Studio.
+
+## Getting Started
+
+1. Install dependencies:
+   \`\`\`
+   npm install
+   \`\`\`
+
+2. Start the development server:
+   \`\`\`
+   npm start
+   \`\`\`
+
+3. Open your browser to \`http://localhost:4200\`
+
+## Design Tokens
+
+Your design tokens are in \`src/styles.css\`. You can use CSS variables like:
+- \`var(--primary-color)\`
+- \`var(--secondary-color)\`
+- \`var(--font-body)\`
+- \`var(--spacing-unit)\`
+- \`var(--border-radius)\`
+`);
+
+    // Generate and download zip
+    const content = await zip.generateAsync({ type: 'blob' });
+    this.downloadBlob(content, 'angular-starter.zip');
+  }
+
+  /** Download React starter project with CSS */
+  async downloadReactStarter() {
+    const zip = new JSZip();
+    const css = this.generateCss();
+
+    // Create React project structure
+    const projectName = 'my-react-app';
+    const folder = zip.folder(projectName);
+    if (!folder) return;
+
+    // package.json
+    folder.file('package.json', JSON.stringify({
+      name: projectName,
+      version: '0.1.0',
+      private: true,
+      dependencies: {
+        'react': '^18.2.0',
+        'react-dom': '^18.2.0',
+        'react-scripts': '5.0.1'
+      },
+      scripts: {
+        start: 'react-scripts start',
+        build: 'react-scripts build',
+        test: 'react-scripts test',
+        eject: 'react-scripts eject'
+      },
+      browserslist: {
+        production: ['>0.2%', 'not dead', 'not op_mini all'],
+        development: ['last 1 chrome version', 'last 1 firefox version', 'last 1 safari version']
+      }
+    }, null, 2));
+
+    // public folder
+    const publicFolder = folder.folder('public');
+    if (!publicFolder) return;
+
+    publicFolder.file('index.html', `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="React app with Thero Studio design tokens" />
+    <title>My React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>`);
+
+    // src folder
+    const srcFolder = folder.folder('src');
+    if (!srcFolder) return;
+
+    // src/index.css - the generated CSS
+    srcFolder.file('index.css', css);
+
+    // src/index.js
+    srcFolder.file('index.js', `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);`);
+
+    // src/App.js
+    srcFolder.file('App.js', `import './App.css';
+
+function App() {
+  return (
+    <main className="App">
+      <h1>Welcome to My React App</h1>
+      <p>Your design tokens are ready to use!</p>
+
+      <section className="demo-section">
+        <h2>Button Examples</h2>
+        <button className="btn-primary">Primary Button</button>
+        <button className="btn-secondary">Secondary Button</button>
+      </section>
+
+      <section className="demo-section">
+        <div className="card">
+          <h3>Example Card</h3>
+          <p>This card uses your custom design tokens for styling.</p>
+          <span className="badge-accent">Accent Badge</span>
+        </div>
+      </section>
+
+      <section className="demo-section">
+        <h2>Status Colors</h2>
+        <p className="text-success">Success message</p>
+        <p className="text-warning">Warning message</p>
+        <p className="text-error">Error message</p>
+      </section>
+    </main>
+  );
+}
+
+export default App;`);
+
+    // src/App.css
+    srcFolder.file('App.css', `.App {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: calc(var(--spacing-unit) * 3);
+}
+
+h1 {
+  font-family: var(--font-heading);
+  color: var(--primary-color);
+}
+
+.demo-section {
+  margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+.demo-section h2 {
+  font-family: var(--font-heading);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+button {
+  margin-right: calc(var(--spacing-unit));
+  cursor: pointer;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+}`);
+
+    // README.md
+    folder.file('README.md', `# My React App
+
+This React project was generated with design tokens from Thero Studio.
+
+## Getting Started
+
+1. Install dependencies:
+   \`\`\`
+   npm install
+   \`\`\`
+
+2. Start the development server:
+   \`\`\`
+   npm start
+   \`\`\`
+
+3. Open your browser to \`http://localhost:3000\`
+
+## Design Tokens
+
+Your design tokens are in \`src/index.css\`. You can use CSS variables like:
+- \`var(--primary-color)\`
+- \`var(--secondary-color)\`
+- \`var(--font-body)\`
+- \`var(--spacing-unit)\`
+- \`var(--border-radius)\`
+`);
+
+    // Generate and download zip
+    const content = await zip.generateAsync({ type: 'blob' });
+    this.downloadBlob(content, 'react-starter.zip');
+  }
+
+  /** Helper to download a blob */
+  private downloadBlob(blob: Blob, filename: string) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   private generateCss(): string {
     const d = this.design;
     const importLines: string[] = [];
@@ -801,11 +1357,12 @@ export class AppComponent implements OnInit {
     const bodySaved = localStorage.getItem?.('thero.googleFontBody');
     const headingSaved = localStorage.getItem?.('thero.googleFontHeading');
     if (bodySaved) {
-      const fam = encodeURIComponent(bodySaved.replace(/\s+/g, '+'));
+      // Only replace spaces with +, don't encode special chars like : and @
+      const fam = bodySaved.replace(/\s+/g, '+');
       importLines.push(`@import url('https://fonts.googleapis.com/css2?family=${fam}&display=swap');`);
     }
     if (headingSaved && headingSaved !== bodySaved) {
-      const fam = encodeURIComponent(headingSaved.replace(/\s+/g, '+'));
+      const fam = headingSaved.replace(/\s+/g, '+');
       importLines.push(`@import url('https://fonts.googleapis.com/css2?family=${fam}&display=swap');`);
     }
 
@@ -828,6 +1385,11 @@ export class AppComponent implements OnInit {
       `  --base-font-size: ${d.baseFontSize}px;`,
       `  --spacing-unit: ${d.spacingUnit}px;`,
       `  --border-radius: ${d.borderRadius}px;`,
+      '',
+      '  /* Custom Spacing Variables */',
+      ...this.spacingCategories.flatMap(cat => 
+        cat.variables.map(v => `  --${cat.id}-${v.id}: ${v.value}px;`)
+      ),
       '}',
       '',
       'body {',

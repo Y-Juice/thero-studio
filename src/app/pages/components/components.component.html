@@ -1,0 +1,795 @@
+<section class="designer">
+  <header class="designer-header">
+    <div class="title-block">
+      <h1>Components</h1>
+      <p>Pick a component type, design it, then save it to your library.</p>
+    </div>
+    <div class="header-actions">
+      <input
+        type="text"
+        class="name-input"
+        [(ngModel)]="componentName"
+        placeholder="Component name"
+      />
+      <button type="button" class="btn-primary" (click)="saveComponent()">
+        {{ currentComponentId ? 'Update' : 'Save' }}
+      </button>
+      <button type="button" class="btn-ghost" (click)="newComponent()">New</button>
+    </div>
+  </header>
+
+  <div class="type-bar">
+    <button
+      type="button"
+      class="type-btn"
+      *ngFor="let t of componentTypes"
+      [class.active]="activeType === t.id"
+      (click)="selectType(t.id)"
+    >
+      <span class="type-icon">{{ t.icon }}</span>
+      <span>{{ t.label }}</span>
+    </button>
+  </div>
+
+  <div class="designer-body">
+    <aside class="panel panel-left">
+      <h3 class="panel-title">Library</h3>
+      <div class="saved-list" *ngIf="savedComponents.length > 0">
+        <div
+          class="saved-item"
+          *ngFor="let comp of savedComponents"
+          [class.active]="currentComponentId === comp.id"
+          (click)="loadComponent(comp)"
+        >
+          <div class="saved-info">
+            <strong>{{ comp.name }}</strong>
+            <small>{{ comp.type }} · {{ comp.savedAt }}</small>
+          </div>
+          <button
+            type="button"
+            class="saved-delete"
+            (click)="deleteSaved(comp, $event)"
+            title="Delete"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+      <p class="empty-text" *ngIf="savedComponents.length === 0">
+        No saved components yet.
+      </p>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-label">Preview</div>
+      <div class="preview-area" [ngStyle]="previewVars" [ngSwitch]="activeType">
+        <button *ngSwitchCase="'button'" type="button" class="preview-btn">
+          {{ buttonStyle.text }}
+        </button>
+
+        <span *ngSwitchCase="'badge'" class="preview-badge">
+          {{ badgeStyle.text }}
+        </span>
+
+        <input
+          *ngSwitchCase="'input'"
+          type="text"
+          class="preview-input"
+          [placeholder]="inputStyle.placeholder"
+        />
+
+        <div *ngSwitchCase="'card'" class="preview-card">
+          <h3 class="preview-card__title">{{ cardStyle.title }}</h3>
+          <p class="preview-card__text">{{ cardStyle.description }}</p>
+          <button *ngIf="cardStyle.showButton" type="button" class="preview-card__btn">
+            {{ cardStyle.buttonText }}
+          </button>
+        </div>
+
+        <div *ngSwitchCase="'alert'" class="preview-alert">
+          <p class="preview-alert__title">{{ alertStyle.title }}</p>
+          <p class="preview-alert__message">{{ alertStyle.message }}</p>
+        </div>
+
+        <div *ngSwitchCase="'header'" class="preview-header-wrap">
+          <header class="preview-header">
+            <div class="preview-header__brand">{{ headerStyle.brand }}</div>
+            <nav class="preview-header__nav">
+              <a
+                *ngFor="let link of headerLinks"
+                class="preview-header__link"
+                href="javascript:void(0)"
+              >{{ link }}</a>
+            </nav>
+            <button type="button" class="preview-header__cta">
+              {{ headerStyle.ctaText }}
+            </button>
+          </header>
+        </div>
+
+        <div *ngSwitchCase="'footer'" class="preview-footer-wrap">
+          <footer class="preview-footer">
+            <div class="preview-footer__top">
+              <div>
+                <div class="preview-footer__brand">{{ footerStyle.brand }}</div>
+                <p class="preview-footer__tagline">{{ footerStyle.tagline }}</p>
+              </div>
+              <nav class="preview-footer__links">
+                <a
+                  *ngFor="let link of footerLinks"
+                  class="preview-footer__link"
+                  href="javascript:void(0)"
+                >{{ link }}</a>
+              </nav>
+            </div>
+            <p class="preview-footer__copy">{{ footerStyle.copyright }}</p>
+          </footer>
+        </div>
+
+        <div *ngSwitchCase="'carousel'" class="preview-carousel-wrap">
+          <div class="preview-carousel">
+            <div class="preview-carousel__track">
+              <div class="preview-carousel__slide">{{ carouselData.slide1 }}</div>
+              <div class="preview-carousel__slide">{{ carouselData.slide2 }}</div>
+              <div class="preview-carousel__slide">{{ carouselData.slide3 }}</div>
+            </div>
+            <button
+              type="button"
+              class="preview-carousel__btn preview-carousel__btn--prev"
+              (click)="prevSlide()"
+            >‹</button>
+            <button
+              type="button"
+              class="preview-carousel__btn preview-carousel__btn--next"
+              (click)="nextSlide()"
+            >›</button>
+            <div class="preview-carousel__dots">
+              <button
+                type="button"
+                class="preview-carousel__dot"
+                [class.active]="carouselIndex === 0"
+                (click)="goToSlide(0)"
+              ></button>
+              <button
+                type="button"
+                class="preview-carousel__dot"
+                [class.active]="carouselIndex === 1"
+                (click)="goToSlide(1)"
+              ></button>
+              <button
+                type="button"
+                class="preview-carousel__dot"
+                [class.active]="carouselIndex === 2"
+                (click)="goToSlide(2)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="preview-hint" *ngIf="activeType === 'button'">
+        Hover the button to see the hover state and animation.
+      </p>
+      <p class="preview-hint" *ngIf="activeType === 'input'">
+        Click the input to see the focus state.
+      </p>
+      <p class="preview-hint" *ngIf="activeType === 'card'">
+        Hover the card to see the hover state.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>Generated CSS</span>
+          <button type="button" class="btn-ghost small" (click)="copyCss()">
+            {{ cssCopied ? 'Copied!' : 'Copy' }}
+          </button>
+        </div>
+        <pre>{{ generatedCss }}</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>HTML</span>
+        </div>
+        <pre>{{ generatedHtml }}</pre>
+      </div>
+    </section>
+
+    <aside class="panel panel-right" [ngSwitch]="activeType">
+      <h3 class="panel-title">Properties</h3>
+
+      <!-- BUTTON -->
+      <div class="props" *ngSwitchCase="'button'">
+        <h4 class="props-section">Base</h4>
+        <label class="field">
+          <span>Text</span>
+          <input type="text" [(ngModel)]="buttonStyle.text" />
+        </label>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="buttonStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="buttonStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="buttonStyle.borderColor" />
+        </label>
+        <label class="field">
+          <span>Border width (px)</span>
+          <input type="number" min="0" max="10" [(ngModel)]="buttonStyle.borderWidth" />
+        </label>
+        <label class="field">
+          <span>Radius (px)</span>
+          <input type="number" min="0" max="40" [(ngModel)]="buttonStyle.borderRadius" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Padding X</span>
+            <input type="number" min="0" max="80" [(ngModel)]="buttonStyle.paddingX" />
+          </label>
+          <label class="field">
+            <span>Padding Y</span>
+            <input type="number" min="0" max="40" [(ngModel)]="buttonStyle.paddingY" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Font size (px)</span>
+          <input type="number" min="8" max="40" [(ngModel)]="buttonStyle.fontSize" />
+        </label>
+        <label class="field">
+          <span>Font weight</span>
+          <input
+            type="number"
+            min="100"
+            max="900"
+            step="100"
+            [(ngModel)]="buttonStyle.fontWeight"
+          />
+        </label>
+        <label class="field">
+          <span>Shadow</span>
+          <select [(ngModel)]="buttonStyle.shadow">
+            <option *ngFor="let s of shadowOptions" [value]="s.id">{{ s.label }}</option>
+          </select>
+        </label>
+
+        <h4 class="props-section">Hover</h4>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="buttonStyle.hoverBgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="buttonStyle.hoverTextColor" />
+        </label>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="buttonStyle.hoverBorderColor" />
+        </label>
+        <label class="field">
+          <span>Translate Y (px)</span>
+          <input
+            type="number"
+            min="-20"
+            max="20"
+            [(ngModel)]="buttonStyle.hoverTranslateY"
+          />
+        </label>
+        <label class="field">
+          <span>Scale</span>
+          <input
+            type="number"
+            min="0.5"
+            max="1.5"
+            step="0.01"
+            [(ngModel)]="buttonStyle.hoverScale"
+          />
+        </label>
+        <label class="field">
+          <span>Shadow</span>
+          <select [(ngModel)]="buttonStyle.hoverShadow">
+            <option *ngFor="let s of shadowOptions" [value]="s.id">{{ s.label }}</option>
+          </select>
+        </label>
+
+        <h4 class="props-section">Animation</h4>
+        <label class="field">
+          <span>Duration (ms)</span>
+          <input
+            type="number"
+            min="0"
+            max="2000"
+            step="10"
+            [(ngModel)]="buttonStyle.transitionDuration"
+          />
+        </label>
+        <label class="field">
+          <span>Easing</span>
+          <select [(ngModel)]="buttonStyle.transitionEasing">
+            <option *ngFor="let e of easingOptions" [value]="e">{{ e }}</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- BADGE -->
+      <div class="props" *ngSwitchCase="'badge'">
+        <label class="field">
+          <span>Text</span>
+          <input type="text" [(ngModel)]="badgeStyle.text" />
+        </label>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="badgeStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="badgeStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Radius (px)</span>
+          <input type="number" min="0" max="999" [(ngModel)]="badgeStyle.borderRadius" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Padding X</span>
+            <input type="number" min="0" max="40" [(ngModel)]="badgeStyle.paddingX" />
+          </label>
+          <label class="field">
+            <span>Padding Y</span>
+            <input type="number" min="0" max="20" [(ngModel)]="badgeStyle.paddingY" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Font size (px)</span>
+          <input type="number" min="8" max="24" [(ngModel)]="badgeStyle.fontSize" />
+        </label>
+        <label class="field">
+          <span>Font weight</span>
+          <input
+            type="number"
+            min="100"
+            max="900"
+            step="100"
+            [(ngModel)]="badgeStyle.fontWeight"
+          />
+        </label>
+        <label class="field field-inline">
+          <input type="checkbox" [(ngModel)]="badgeStyle.uppercase" />
+          <span>Uppercase</span>
+        </label>
+        <label class="field">
+          <span>Letter spacing (0.01em)</span>
+          <input type="number" min="0" max="30" [(ngModel)]="badgeStyle.letterSpacing" />
+        </label>
+      </div>
+
+      <!-- INPUT -->
+      <div class="props" *ngSwitchCase="'input'">
+        <h4 class="props-section">Base</h4>
+        <label class="field">
+          <span>Placeholder</span>
+          <input type="text" [(ngModel)]="inputStyle.placeholder" />
+        </label>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="inputStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="inputStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="inputStyle.borderColor" />
+        </label>
+        <label class="field">
+          <span>Border width (px)</span>
+          <input type="number" min="0" max="6" [(ngModel)]="inputStyle.borderWidth" />
+        </label>
+        <label class="field">
+          <span>Radius (px)</span>
+          <input type="number" min="0" max="40" [(ngModel)]="inputStyle.borderRadius" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Padding X</span>
+            <input type="number" min="0" max="40" [(ngModel)]="inputStyle.paddingX" />
+          </label>
+          <label class="field">
+            <span>Padding Y</span>
+            <input type="number" min="0" max="24" [(ngModel)]="inputStyle.paddingY" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Font size (px)</span>
+          <input type="number" min="8" max="24" [(ngModel)]="inputStyle.fontSize" />
+        </label>
+
+        <h4 class="props-section">Focus</h4>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="inputStyle.focusBgColor" />
+        </label>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="inputStyle.focusBorderColor" />
+        </label>
+        <label class="field">
+          <span>Ring color</span>
+          <input type="text" [(ngModel)]="inputStyle.focusRingColor" />
+        </label>
+        <label class="field">
+          <span>Ring width (px)</span>
+          <input type="number" min="0" max="12" [(ngModel)]="inputStyle.focusRingWidth" />
+        </label>
+        <label class="field">
+          <span>Transition (ms)</span>
+          <input
+            type="number"
+            min="0"
+            max="1000"
+            step="10"
+            [(ngModel)]="inputStyle.transitionDuration"
+          />
+        </label>
+      </div>
+
+      <!-- CARD -->
+      <div class="props" *ngSwitchCase="'card'">
+        <h4 class="props-section">Content</h4>
+        <label class="field">
+          <span>Title</span>
+          <input type="text" [(ngModel)]="cardStyle.title" />
+        </label>
+        <label class="field">
+          <span>Description</span>
+          <textarea rows="3" [(ngModel)]="cardStyle.description"></textarea>
+        </label>
+        <label class="field field-inline">
+          <input type="checkbox" [(ngModel)]="cardStyle.showButton" />
+          <span>Show button</span>
+        </label>
+        <label class="field" *ngIf="cardStyle.showButton">
+          <span>Button text</span>
+          <input type="text" [(ngModel)]="cardStyle.buttonText" />
+        </label>
+        <label class="field" *ngIf="cardStyle.showButton">
+          <span>Button background</span>
+          <input type="color" [(ngModel)]="cardStyle.buttonBgColor" />
+        </label>
+        <label class="field" *ngIf="cardStyle.showButton">
+          <span>Button text color</span>
+          <input type="color" [(ngModel)]="cardStyle.buttonTextColor" />
+        </label>
+
+        <h4 class="props-section">Base</h4>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="cardStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Title color</span>
+          <input type="color" [(ngModel)]="cardStyle.titleColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="cardStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="cardStyle.borderColor" />
+        </label>
+        <label class="field">
+          <span>Border width (px)</span>
+          <input type="number" min="0" max="6" [(ngModel)]="cardStyle.borderWidth" />
+        </label>
+        <label class="field">
+          <span>Radius (px)</span>
+          <input type="number" min="0" max="40" [(ngModel)]="cardStyle.borderRadius" />
+        </label>
+        <label class="field">
+          <span>Padding (px)</span>
+          <input type="number" min="0" max="60" [(ngModel)]="cardStyle.padding" />
+        </label>
+        <label class="field">
+          <span>Shadow</span>
+          <select [(ngModel)]="cardStyle.shadow">
+            <option *ngFor="let s of shadowOptions" [value]="s.id">{{ s.label }}</option>
+          </select>
+        </label>
+
+        <h4 class="props-section">Hover</h4>
+        <label class="field">
+          <span>Shadow</span>
+          <select [(ngModel)]="cardStyle.hoverShadow">
+            <option *ngFor="let s of shadowOptions" [value]="s.id">{{ s.label }}</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Translate Y (px)</span>
+          <input
+            type="number"
+            min="-20"
+            max="20"
+            [(ngModel)]="cardStyle.hoverTranslateY"
+          />
+        </label>
+        <label class="field">
+          <span>Duration (ms)</span>
+          <input
+            type="number"
+            min="0"
+            max="1000"
+            step="10"
+            [(ngModel)]="cardStyle.transitionDuration"
+          />
+        </label>
+      </div>
+
+      <!-- ALERT -->
+      <div class="props" *ngSwitchCase="'alert'">
+        <label class="field">
+          <span>Title</span>
+          <input type="text" [(ngModel)]="alertStyle.title" />
+        </label>
+        <label class="field">
+          <span>Message</span>
+          <textarea rows="2" [(ngModel)]="alertStyle.message"></textarea>
+        </label>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="alertStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="alertStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="alertStyle.borderColor" />
+        </label>
+        <label class="field">
+          <span>Border width (px)</span>
+          <input type="number" min="0" max="6" [(ngModel)]="alertStyle.borderWidth" />
+        </label>
+        <label class="field">
+          <span>Accent color</span>
+          <input type="color" [(ngModel)]="alertStyle.accentColor" />
+        </label>
+        <label class="field">
+          <span>Accent width (px)</span>
+          <input type="number" min="0" max="12" [(ngModel)]="alertStyle.accentWidth" />
+        </label>
+        <label class="field">
+          <span>Radius (px)</span>
+          <input type="number" min="0" max="40" [(ngModel)]="alertStyle.borderRadius" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Padding X</span>
+            <input type="number" min="0" max="60" [(ngModel)]="alertStyle.paddingX" />
+          </label>
+          <label class="field">
+            <span>Padding Y</span>
+            <input type="number" min="0" max="40" [(ngModel)]="alertStyle.paddingY" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Font size (px)</span>
+          <input type="number" min="8" max="24" [(ngModel)]="alertStyle.fontSize" />
+        </label>
+      </div>
+
+      <!-- HEADER -->
+      <div class="props" *ngSwitchCase="'header'">
+        <h4 class="props-section">Content</h4>
+        <label class="field">
+          <span>Brand</span>
+          <input type="text" [(ngModel)]="headerStyle.brand" />
+        </label>
+        <label class="field">
+          <span>Links (comma separated)</span>
+          <input type="text" [(ngModel)]="headerStyle.links" />
+        </label>
+        <label class="field">
+          <span>CTA text</span>
+          <input type="text" [(ngModel)]="headerStyle.ctaText" />
+        </label>
+
+        <h4 class="props-section">Appearance</h4>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="headerStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="headerStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Link color</span>
+          <input type="color" [(ngModel)]="headerStyle.linkColor" />
+        </label>
+        <label class="field">
+          <span>Link hover color</span>
+          <input type="color" [(ngModel)]="headerStyle.linkHoverColor" />
+        </label>
+        <label class="field">
+          <span>CTA background</span>
+          <input type="color" [(ngModel)]="headerStyle.ctaBgColor" />
+        </label>
+        <label class="field">
+          <span>CTA text color</span>
+          <input type="color" [(ngModel)]="headerStyle.ctaTextColor" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Padding X</span>
+            <input type="number" min="0" max="80" [(ngModel)]="headerStyle.paddingX" />
+          </label>
+          <label class="field">
+            <span>Padding Y</span>
+            <input type="number" min="0" max="40" [(ngModel)]="headerStyle.paddingY" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="headerStyle.borderBottomColor" />
+        </label>
+        <label class="field">
+          <span>Border width (px)</span>
+          <input
+            type="number"
+            min="0"
+            max="6"
+            [(ngModel)]="headerStyle.borderBottomWidth"
+          />
+        </label>
+        <label class="field">
+          <span>Shadow</span>
+          <select [(ngModel)]="headerStyle.shadow">
+            <option *ngFor="let s of shadowOptions" [value]="s.id">{{ s.label }}</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="props" *ngSwitchCase="'footer'">
+        <h4 class="props-section">Content</h4>
+        <label class="field">
+          <span>Brand</span>
+          <input type="text" [(ngModel)]="footerStyle.brand" />
+        </label>
+        <label class="field">
+          <span>Tagline</span>
+          <input type="text" [(ngModel)]="footerStyle.tagline" />
+        </label>
+        <label class="field">
+          <span>Links (comma separated)</span>
+          <input type="text" [(ngModel)]="footerStyle.links" />
+        </label>
+        <label class="field">
+          <span>Copyright</span>
+          <input type="text" [(ngModel)]="footerStyle.copyright" />
+        </label>
+
+        <h4 class="props-section">Appearance</h4>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="footerStyle.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="footerStyle.textColor" />
+        </label>
+        <label class="field">
+          <span>Link color</span>
+          <input type="color" [(ngModel)]="footerStyle.linkColor" />
+        </label>
+        <label class="field">
+          <span>Muted color</span>
+          <input type="color" [(ngModel)]="footerStyle.mutedColor" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Padding X</span>
+            <input type="number" min="0" max="80" [(ngModel)]="footerStyle.paddingX" />
+          </label>
+          <label class="field">
+            <span>Padding Y</span>
+            <input type="number" min="0" max="80" [(ngModel)]="footerStyle.paddingY" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Border color</span>
+          <input type="color" [(ngModel)]="footerStyle.borderTopColor" />
+        </label>
+        <label class="field">
+          <span>Border width (px)</span>
+          <input
+            type="number"
+            min="0"
+            max="6"
+            [(ngModel)]="footerStyle.borderTopWidth"
+          />
+        </label>
+      </div>
+
+      <!-- CAROUSEL -->
+      <div class="props" *ngSwitchCase="'carousel'">
+        <h4 class="props-section">Slides</h4>
+        <label class="field">
+          <span>Slide 1</span>
+          <input type="text" [(ngModel)]="carouselData.slide1" />
+        </label>
+        <label class="field">
+          <span>Slide 2</span>
+          <input type="text" [(ngModel)]="carouselData.slide2" />
+        </label>
+        <label class="field">
+          <span>Slide 3</span>
+          <input type="text" [(ngModel)]="carouselData.slide3" />
+        </label>
+
+        <h4 class="props-section">Appearance</h4>
+        <label class="field">
+          <span>Background</span>
+          <input type="color" [(ngModel)]="carouselData.bgColor" />
+        </label>
+        <label class="field">
+          <span>Text color</span>
+          <input type="color" [(ngModel)]="carouselData.textColor" />
+        </label>
+        <label class="field">
+          <span>Dot color</span>
+          <input type="text" [(ngModel)]="carouselData.indicatorColor" />
+        </label>
+        <label class="field">
+          <span>Active dot color</span>
+          <input type="color" [(ngModel)]="carouselData.indicatorActiveColor" />
+        </label>
+        <label class="field">
+          <span>Radius (px)</span>
+          <input type="number" min="0" max="40" [(ngModel)]="carouselData.borderRadius" />
+        </label>
+        <label class="field">
+          <span>Height (px)</span>
+          <input type="number" min="100" max="500" [(ngModel)]="carouselData.height" />
+        </label>
+
+        <h4 class="props-section">Animation</h4>
+        <label class="field field-inline">
+          <input
+            type="checkbox"
+            [(ngModel)]="carouselData.autoPlay"
+            (ngModelChange)="onCarouselAutoPlayChange()"
+          />
+          <span>Auto-play</span>
+        </label>
+        <label class="field" *ngIf="carouselData.autoPlay">
+          <span>Interval (ms)</span>
+          <input
+            type="number"
+            min="500"
+            max="10000"
+            step="100"
+            [(ngModel)]="carouselData.interval"
+            (ngModelChange)="onCarouselIntervalChange()"
+          />
+        </label>
+        <label class="field">
+          <span>Transition (ms)</span>
+          <input
+            type="number"
+            min="0"
+            max="2000"
+            step="10"
+            [(ngModel)]="carouselData.transitionDuration"
+          />
+        </label>
+      </div>
+    </aside>
+  </div>
+</section>

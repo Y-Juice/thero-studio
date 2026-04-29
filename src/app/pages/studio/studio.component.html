@@ -1,0 +1,945 @@
+<main class="shell">
+  <header class="shell-header">
+    <h1>{{ title }}</h1>
+    <p>Experiment with colors, fonts, spacing and radius, then export a CSS styleguide.</p>
+  </header>
+
+  <section class="shell-body">
+    <div class="controls-shell">
+      <!-- Glassy toggle button in the top-left corner -->
+      <button
+        class="controls-toggle"
+        type="button"
+        (click)="toggleControls()"
+        [attr.aria-expanded]="isControlsOpen"
+        aria-label="Toggle design controls"
+      >
+        <svg *ngIf="!isControlsOpen" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <svg *ngIf="isControlsOpen" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+   <section class="controls" [class.is-open]="isControlsOpen">
+      <!-- Main Menu -->
+      <div class="nav-menu" *ngIf="!activeSection">
+        <h2>Design tokens</h2>
+        <nav class="nav-list">
+          <button class="nav-item" type="button" (click)="openSection('presets')">
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="13.5" cy="6.5" r="2.5"></circle>
+                <circle cx="6.5" cy="17.5" r="2.5"></circle>
+                <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                <path d="M13.5 9v3.5L10 18"></path>
+                <path d="M13.5 12.5L17 18"></path>
+              </svg>
+            </span>
+            <span class="nav-item-label">Style Presets</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('colors')">
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+              </svg>
+            </span>
+            <span class="nav-item-label">Colors</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('typography')">
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                <line x1="9" y1="20" x2="15" y2="20"></line>
+                <line x1="12" y1="4" x2="12" y2="20"></line>
+              </svg>
+            </span>
+            <span class="nav-item-label">Typography</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('spacing')">
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 6H3"></path>
+                <path d="M21 12H9"></path>
+                <path d="M21 18H7"></path>
+                <path d="M3 12h2"></path>
+                <path d="M3 18h2"></path>
+              </svg>
+            </span>
+            <span class="nav-item-label">Spacing</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+          <button class="nav-item" type="button" (click)="openSection('export')">
+            <span class="nav-item-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </span>
+            <span class="nav-item-label">Export</span>
+            <span class="nav-item-arrow">
+              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Style Presets Section -->
+      <div class="nav-section" *ngIf="activeSection === 'presets'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Style Presets</h3>
+        <div class="field-group">
+          <label>
+            <span>Preset</span>
+            <select [(ngModel)]="currentStyle" (ngModelChange)="applyStylePreset($event)">
+              <option *ngFor="let preset of stylePresets" [value]="preset.id">
+                {{ preset.label }}
+              </option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- Colors Section -->
+      <div class="nav-section" *ngIf="activeSection === 'colors'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Colors</h3>
+        
+        <div class="color-list">
+          <div class="color-item">
+            <span class="color-item-label">Primary</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['primaryColor']"
+                (click)="toggleLock('primaryColor')"
+              >
+                <svg *ngIf="locks['primaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['primaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.primaryColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.primaryColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Secondary</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['secondaryColor']"
+                (click)="toggleLock('secondaryColor')"
+              >
+                <svg *ngIf="locks['secondaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['secondaryColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.secondaryColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.secondaryColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Accent</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['accentColor']"
+                (click)="toggleLock('accentColor')"
+              >
+                <svg *ngIf="locks['accentColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['accentColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.accentColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.accentColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Success</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['successColor']"
+                (click)="toggleLock('successColor')"
+              >
+                <svg *ngIf="locks['successColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['successColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.successColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.successColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Warning</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['warningColor']"
+                (click)="toggleLock('warningColor')"
+              >
+                <svg *ngIf="locks['warningColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['warningColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.warningColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.warningColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Error</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['errorColor']"
+                (click)="toggleLock('errorColor')"
+              >
+                <svg *ngIf="locks['errorColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['errorColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.errorColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.errorColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Background</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['backgroundColor']"
+                (click)="toggleLock('backgroundColor')"
+              >
+                <svg *ngIf="locks['backgroundColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['backgroundColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.backgroundColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.backgroundColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Surface</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['surfaceColor']"
+                (click)="toggleLock('surfaceColor')"
+              >
+                <svg *ngIf="locks['surfaceColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['surfaceColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.surfaceColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.surfaceColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Text</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['textColor']"
+                (click)="toggleLock('textColor')"
+              >
+                <svg *ngIf="locks['textColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['textColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.textColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.textColor"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="color-item">
+            <span class="color-item-label">Text Muted</span>
+            <div class="color-item-controls">
+              <button
+                type="button"
+                class="color-lock-btn"
+                [class.locked]="locks['mutedTextColor']"
+                (click)="toggleLock('mutedTextColor')"
+              >
+                <svg *ngIf="locks['mutedTextColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <svg *ngIf="!locks['mutedTextColor']" class="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                </svg>
+              </button>
+              <label class="color-swatch-wrapper">
+                <input type="color" [(ngModel)]="design.mutedTextColor" class="color-input-hidden" />
+                <span class="color-swatch" [style.background-color]="design.mutedTextColor"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <button class="randomize-button" type="button" (click)="randomizeColors()">
+          Randomize
+        </button>
+
+        <div class="dark-mode-toggle">
+          <span class="dark-mode-label">Dark mode</span>
+          <button 
+            type="button" 
+            class="toggle-switch" 
+            [class.active]="isDarkMode"
+            (click)="toggleDarkMode()"
+          >
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Typography Section -->
+      <div class="nav-section" *ngIf="activeSection === 'typography'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Typography</h3>
+        
+        <div class="typography-panel">
+          <!-- Text Types Preview Box -->
+          <div class="typography-preview">
+            <div 
+              *ngFor="let textType of textTypes"
+              class="typo-item"
+              [class.selected]="selectedTextTypeId === textType.id"
+              [ngStyle]="getTextTypeStyles(textType)"
+              (click)="selectTextType(textType.id)"
+            >
+              {{ textType.name }}
+              <button 
+                *ngIf="textType.isCustom"
+                type="button"
+                class="remove-text-type"
+                (click)="removeTextType(textType.id); $event.stopPropagation()"
+              >
+                <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Add Text Type Button -->
+            <div class="add-text-type-row" *ngIf="!showAddTextType">
+              <button type="button" class="add-text-type-btn" (click)="toggleAddTextType()">
+                <span>+</span> Add text type
+              </button>
+            </div>
+            
+            <!-- Add Text Type Input -->
+            <div class="add-text-type-input" *ngIf="showAddTextType">
+              <input 
+                type="text" 
+                [(ngModel)]="newTextTypeName" 
+                placeholder="Text type name"
+                (keyup.enter)="addCustomTextType()"
+              />
+              <button type="button" class="add-btn" (click)="addCustomTextType()">Add</button>
+              <button type="button" class="cancel-btn" (click)="toggleAddTextType()">
+                <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Font List -->
+          <div class="font-list-container">
+            <div class="font-list" *ngIf="!loadingFonts">
+              <button 
+                *ngFor="let font of allFonts" 
+                type="button"
+                class="font-list-item"
+                [class.selected]="selectedTextType.fontFamily === font.family"
+                [style.font-family]="font.family + ', sans-serif'"
+                (click)="selectFont(font.family)"
+                (mouseenter)="previewFont(font.family, font.variants)"
+              >
+                {{ font.family }}
+              </button>
+            </div>
+            <div *ngIf="loadingFonts" class="font-list-loading">
+              Loading fonts...
+            </div>
+          </div>
+        </div>
+
+        <!-- Font Weight Input -->
+        <div class="font-weight-row">
+          <label class="font-weight-label">
+            <span>Weight</span>
+            <input 
+              type="text" 
+              [(ngModel)]="selectedTextType.fontWeight" 
+              (ngModelChange)="onFontWeightChange()"
+              placeholder="400"
+              class="font-weight-input"
+            />
+          </label>
+        </div>
+
+        <!-- Text Style Buttons -->
+        <div class="text-style-buttons">
+          <button 
+            type="button" 
+            class="style-btn"
+            [class.active]="selectedTextType.isBold"
+            (click)="toggleBold()"
+          >
+            <strong>B</strong>
+          </button>
+          <button 
+            type="button" 
+            class="style-btn"
+            [class.active]="selectedTextType.isItalic"
+            (click)="toggleItalic()"
+          >
+            <em>i</em>
+          </button>
+          <button 
+            type="button" 
+            class="style-btn"
+            [class.active]="selectedTextType.isUnderline"
+            (click)="toggleUnderline()"
+          >
+            <span style="text-decoration: underline;">U</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Spacing Section -->
+      <div class="nav-section" *ngIf="activeSection === 'spacing'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Spacing</h3>
+        
+        <div class="spacing-categories">
+          <div class="spacing-category" *ngFor="let category of spacingCategories">
+            <!-- Category Header -->
+            <div class="spacing-category-header" (click)="toggleSpacingCategory(category.id)">
+              <span class="spacing-category-name">{{ category.name }}</span>
+              <button type="button" class="spacing-toggle-btn">
+                <svg *ngIf="category.isExpanded" class="icon-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <svg *ngIf="category.isExpanded" class="icon-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+                <svg *ngIf="!category.isExpanded" class="icon-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Category Content -->
+            <div class="spacing-category-content" *ngIf="category.isExpanded">
+              <div class="spacing-variable" *ngFor="let variable of category.variables">
+                <span class="spacing-variable-name">{{ variable.name }}</span>
+                <div class="spacing-variable-controls">
+                  <input 
+                    type="text" 
+                    class="spacing-value-input"
+                    [value]="variable.value + 'px'"
+                    (blur)="variable.value = +$any($event.target).value.replace('px', '')"
+                    (keyup.enter)="variable.value = +$any($event.target).value.replace('px', '')"
+                  />
+                  <button 
+                    type="button" 
+                    class="spacing-remove-btn"
+                    (click)="removeSpacingVariable(category.id, variable.id)"
+                  >
+                    <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Add Variable Button -->
+              <div class="spacing-add-row" *ngIf="!showAddSpacing[category.id]">
+                <button type="button" class="spacing-add-btn" (click)="showAddSpacingInput(category.id)">
+                  +
+                </button>
+              </div>
+              
+              <!-- Add Variable Input -->
+              <div class="spacing-add-input" *ngIf="showAddSpacing[category.id]">
+                <input 
+                  type="text" 
+                  [(ngModel)]="newSpacingName" 
+                  placeholder="Variable name"
+                  (keyup.enter)="addSpacingVariable(category.id)"
+                />
+                <button type="button" class="add-btn" (click)="addSpacingVariable(category.id)">Add</button>
+                <button type="button" class="cancel-btn" (click)="hideAddSpacingInput(category.id)">
+                  <svg class="icon-close-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Border Radius (kept separate) -->
+        <div class="field-group spacing-radius-group">
+          <label>
+            <span>Border radius (px)</span>
+            <input
+              type="number"
+              min="0"
+              max="32"
+              [(ngModel)]="design.borderRadius"
+            />
+          </label>
+        </div>
+      </div>
+
+      <!-- Export Section -->
+      <div class="nav-section" *ngIf="activeSection === 'export'">
+        <button class="nav-back" type="button" (click)="goBackToMenu()">
+          <svg class="icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>Back</span>
+        </button>
+        <h3 class="section-title">Export</h3>
+        <div class="field-group">
+          <p class="export-description">Export your design tokens as a CSS file or inside a working starter project.</p>
+          
+          <div class="export-options">
+            <label class="export-option" [class.selected]="exportType === 'css'">
+              <input 
+                type="radio" 
+                name="exportType" 
+                value="css" 
+                [(ngModel)]="exportType"
+              />
+              <span class="export-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </span>
+              <span class="export-option-text">
+                <span class="export-option-title">CSS Only</span>
+                <span class="export-option-desc">Download styleguide.css</span>
+              </span>
+            </label>
+            
+            <label class="export-option" [class.selected]="exportType === 'angular'">
+              <input 
+                type="radio" 
+                name="exportType" 
+                value="angular" 
+                [(ngModel)]="exportType"
+              />
+              <span class="export-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9.93 12.645h4.134L12 7.314l-2.07 5.331zM12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm4.776 15H14.57l-.858-2.152H10.29L9.43 16H7.224L12 4.328 16.776 16z"/>
+                </svg>
+              </span>
+              <span class="export-option-text">
+                <span class="export-option-title">Angular Starter</span>
+                <span class="export-option-desc">Angular 17 project with CSS</span>
+              </span>
+            </label>
+            
+            <label class="export-option" [class.selected]="exportType === 'react'">
+              <input 
+                type="radio" 
+                name="exportType" 
+                value="react" 
+                [(ngModel)]="exportType"
+              />
+              <span class="export-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="2.5"></circle>
+                  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1"></ellipse>
+                  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(60 12 12)"></ellipse>
+                  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(120 12 12)"></ellipse>
+                </svg>
+              </span>
+              <span class="export-option-text">
+                <span class="export-option-title">React Starter</span>
+                <span class="export-option-desc">React 18 project with CSS</span>
+              </span>
+            </label>
+          </div>
+          
+          <button class="export-button" type="button" (click)="exportProject()">
+            <span *ngIf="exportType === 'css'">Export CSS styleguide</span>
+            <span *ngIf="exportType === 'angular'">Download Angular Starter</span>
+            <span *ngIf="exportType === 'react'">Download React Starter</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+    <section class="preview" [ngStyle]="previewStyles">
+      <div class="preview-window" [attr.data-style]="currentStyle">
+        <!-- Top navigation -->
+        <nav class="lp-nav">
+          <div class="lp-nav-left">
+            <div class="preview-logo-circle"></div>
+            <span class="lp-brand">PixelCraft</span>
+          </div>
+          <div class="lp-nav-links">
+            <span>Services</span>
+            <span>Portfolio</span>
+            <span>About</span>
+            <span>Contact</span>
+          </div>
+          <div class="lp-nav-actions">
+            <button class="btn-secondary" type="button">Login</button>
+            <button class="btn-primary" type="button">Get Started</button>
+          </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="lp-hero">
+          <div class="lp-hero-text">
+            <div class="lp-badge">Trusted by 500+ businesses</div>
+            <h2>Beautiful Web Design That Converts</h2>
+            <p>
+              Transform your business with clean, responsive websites that drive
+              results. Adjust the style tokens to see how your brand could look.
+            </p>
+            <div class="lp-hero-actions">
+              <button class="btn-primary" type="button">Start Project</button>
+              <button class="btn-secondary" type="button">Watch Demo</button>
+            </div>
+          </div>
+          <div class="lp-hero-media">
+            <div class="lp-hero-media-placeholder">Hero Image Placeholder</div>
+          </div>
+        </section>
+
+        <!-- Why choose us -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Why Choose PixelCraft?</h3>
+            <p class="lp-section-subtitle">
+              Comprehensive web design solutions for modern businesses.
+            </p>
+          </div>
+          <div class="lp-features">
+            <article class="card lp-feature-card">
+              <div class="lp-feature-icon"></div>
+              <h4 class="lp-feature-title">Responsive Design</h4>
+              <p class="lp-feature-text">
+                Perfect viewing experience across all devices and screen sizes.
+              </p>
+            </article>
+            <article class="card lp-feature-card">
+              <div class="lp-feature-icon"></div>
+              <h4 class="lp-feature-title">Fast Performance</h4>
+              <p class="lp-feature-text">
+                Optimised for speed, SEO, and a smooth user experience.
+              </p>
+            </article>
+            <article class="card lp-feature-card">
+              <div class="lp-feature-icon"></div>
+              <h4 class="lp-feature-title">Secure & Reliable</h4>
+              <p class="lp-feature-text">
+                Built with best practices for security, reliability, and uptime.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Recent work -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Our Recent Work</h3>
+            <p class="lp-section-subtitle">
+              Explore example projects styled with your current design tokens.
+            </p>
+          </div>
+          <div class="lp-work-grid">
+            <article class="card lp-work-card">
+              <div class="lp-work-image">E‑commerce Website</div>
+              <div class="lp-work-meta">
+                <h4>Fashion Boutique</h4>
+                <p>Modern e‑commerce platform with seamless shopping experience.</p>
+              </div>
+            </article>
+            <article class="card lp-work-card">
+              <div class="lp-work-image">Corporate Website</div>
+              <div class="lp-work-meta">
+                <h4>Tech Startup</h4>
+                <p>Clean corporate identity with modern design elements.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">What Our Clients Say</h3>
+    </div>
+          <div class="lp-testimonials-grid">
+            <article class="card lp-testimonial-card">
+              <div class="lp-stars">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <p>
+                “PixelCraft delivered a website that exceeded our expectations. The design
+                is both beautiful and functional.”
+              </p>
+              <div class="lp-testimonial-name">Sarah Johnson</div>
+              <div class="lp-testimonial-role">CEO, TechVision</div>
+            </article>
+            <article class="card lp-testimonial-card">
+              <div class="lp-stars">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <p>
+                “Our new site increased conversions by over 40%. Being able to preview the
+                style tokens made decisions easy.”
+              </p>
+              <div class="lp-testimonial-name">Michael Chen</div>
+              <div class="lp-testimonial-role">Founder, GreenLeaf</div>
+            </article>
+            <article class="card lp-testimonial-card">
+              <div class="lp-stars">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <p>
+                “Amazing attention to detail and creative solutions. The brand feels
+                consistent across every page.”
+              </p>
+              <div class="lp-testimonial-name">Emily Rodriguez</div>
+              <div class="lp-testimonial-role">Marketing Director, Bloom</div>
+            </article>
+      </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="lp-section">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Choose Your Plan</h3>
+            <p class="lp-section-subtitle">
+              Pricing cards below use your current spacing, radius, and colors.
+            </p>
+          </div>
+          <div class="lp-pricing-grid">
+            <article class="card lp-pricing-card">
+              <h4>Starter</h4>
+              <div class="lp-pricing-price">$2,999<span>/project</span></div>
+              <ul class="lp-pricing-features">
+                <li>5‑page website</li>
+                <li>Responsive design</li>
+                <li>Basic SEO</li>
+                <li>Contact form</li>
+              </ul>
+              <button class="btn-secondary" type="button">Get Started</button>
+            </article>
+            <article class="card lp-pricing-card lp-pricing-card--featured">
+              <div class="lp-pricing-tag">Most Popular</div>
+              <h4>Professional</h4>
+              <div class="lp-pricing-price">$5,999<span>/project</span></div>
+              <ul class="lp-pricing-features">
+                <li>10‑page website</li>
+                <li>Advanced SEO</li>
+                <li>CMS integration</li>
+                <li>Analytics setup</li>
+              </ul>
+              <button class="btn-primary" type="button">Get Started</button>
+            </article>
+            <article class="card lp-pricing-card">
+              <h4>Enterprise</h4>
+              <div class="lp-pricing-price">$9,999<span>/project</span></div>
+              <ul class="lp-pricing-features">
+                <li>Unlimited pages</li>
+                <li>E‑commerce integration</li>
+                <li>Custom features</li>
+                <li>Priority support</li>
+              </ul>
+              <button class="btn-secondary" type="button">Contact Sales</button>
+            </article>
+    </div>
+        </section>
+
+        <!-- Color roles preview -->
+        <section class="lp-section lp-section-tokens">
+          <div class="lp-section-header">
+            <h3 class="lp-section-title">Color roles</h3>
+            <p class="lp-section-subtitle">
+              A quick overview of how your semantic colors look.
+            </p>
+          </div>
+          <div class="lp-token-row">
+            <div class="lp-token-swatch lp-token-swatch--primary">
+              <span>Primary</span>
+            </div>
+            <div class="lp-token-swatch lp-token-swatch--secondary">
+              <span>Secondary</span>
+            </div>
+            <div class="lp-token-swatch lp-token-swatch--accent">
+              <span>Accent</span>
+            </div>
+            <div class="lp-token-swatch lp-token-swatch--success">
+              <span>Success</span>
+    </div>
+            <div class="lp-token-swatch lp-token-swatch--warning">
+              <span>Warning</span>
+      </div>
+            <div class="lp-token-swatch lp-token-swatch--error">
+              <span>Error</span>
+      </div>
+    </div>
+        </section>
+  </div>
+    </section>
+  </section>
+</main>
+
+

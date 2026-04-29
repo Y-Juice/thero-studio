@@ -1,0 +1,45 @@
+<section class="profile-page">
+  <header class="profile-header">
+    <h1>Profile</h1>
+    <p>Manage your personal info. Saved locally on this device.</p>
+  </header>
+
+  <div class="profile-grid">
+    <aside class="profile-card">
+      <div class="avatar" [ngStyle]="{ 'background-color': avatarColor }">
+        {{ initials }}
+      </div>
+      <h2 class="profile-name">{{ name || 'Unnamed user' }}</h2>
+      <p class="profile-email">{{ email || 'no-email@example.com' }}</p>
+      <p class="profile-bio">{{ bio || 'No bio yet.' }}</p>
+      <small *ngIf="savedAt" class="saved-at">Last saved: {{ savedAt }}</small>
+    </aside>
+
+    <form class="profile-form" (submit)="$event.preventDefault(); save()">
+      <label class="field">
+        <span>Name</span>
+        <input type="text" [(ngModel)]="name" name="name" placeholder="Jane Doe" />
+      </label>
+
+      <label class="field">
+        <span>Email</span>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="jane@example.com" />
+      </label>
+
+      <label class="field">
+        <span>Bio</span>
+        <textarea [(ngModel)]="bio" name="bio" rows="4" placeholder="A short description about yourself"></textarea>
+      </label>
+
+      <label class="field field-row">
+        <span>Avatar color</span>
+        <input type="color" [(ngModel)]="avatarColor" name="avatarColor" />
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Save</button>
+        <button type="button" class="btn-reset" (click)="reset()">Reset</button>
+      </div>
+    </form>
+  </div>
+</section>

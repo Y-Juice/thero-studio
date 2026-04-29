@@ -1,0 +1,24 @@
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Welcome to Thero Studio</span>
+    <h1>Design systems made visual.</h1>
+    <p>
+      Build your own design tokens, compose reusable components with drag and drop,
+      and export a clean CSS styleguide or a full starter project.
+    </p>
+    <div class="hero-actions">
+      <a class="cta-primary" routerLink="/studio">Open the Studio</a>
+      <a class="cta-secondary" routerLink="/components">Build Components</a>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <h2>What you can do</h2>
+  <div class="feature-grid">
+    <article class="feature-card" *ngFor="let f of features">
+      <h3>{{ f.title }}</h3>
+      <p>{{ f.text }}</p>
+    </article>
+  </div>
+</section>
